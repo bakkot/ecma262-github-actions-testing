@@ -16,7 +16,7 @@ jobs:
         with:
           result-encoding: string
           script: |
-            const author = process.env.TITLE;
+            const author = process.env.AUTHOR;
             try {
               const result = await github.request('GET /orgs/{org}/members/{username}', {
                 org: 'tc39',
