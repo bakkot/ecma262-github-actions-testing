@@ -36,7 +36,7 @@ jobs:
     name: 'build/upload preview'
     runs-on: ubuntu-22.04
     needs: check-membership
-    if: needs.check-membership.result == 'yes'
+    if: needs.check-membership.outputs.result == 'yes'
     steps:
       - run: echo "we should be good"
 
