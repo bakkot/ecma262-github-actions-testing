@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-22.04
     if: ${{ github.repository == 'bakkot/ecma262-github-actions-testing' }}
 
+    permissions:
+      contents: write
+
     steps:
       - uses: actions/checkout@v4
       - uses: ljharb/actions/node/install@7f214d8efdbdcefc96ad9689663ef387a195deec
