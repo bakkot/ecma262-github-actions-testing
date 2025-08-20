@@ -27,6 +27,7 @@ jobs:
               });
               return 'yes';
             } catch (e) {
+              console.log('error', { author }, e);
               return 'no';
             }
       - run: echo "${{steps.test-membership.outputs.result}}"
