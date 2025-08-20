@@ -1,0 +1,46 @@
+name: 'ecma262'
+
+on: [pull_request_target]
+
+jobs:
+  check-membership:
+    outputs:
+      result: ${{ steps.test-membership.outputs.result }}
+    steps:
+      - uses: actions/github-script@v7
+        id: test-membership
+        env:
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+        with:
+          result-encoding: string
+          script: |
+            const author = process.env.TITLE;
+            try {
+              const result = await octokit.request('GET /orgs/{org}/members/{username}', {
+                org: 'tc39',
+                username: author,
+                headers: {
+                  'X-GitHub-Api-Version': '2022-11-28'
+                }
+              });
+              return 'yes';
+            } catch (e) {
+              return 'no';
+            }
+      - run: echo "${{steps.test-membership.outputs.result}}"
+
+  build:
+    needs: check-membership
+    if: needs.check-membership.result == 'yes'
+    steps:
+      - run: echo "we should be good"
+
+  # build:
+  #   name: 'publish PR preview'
+  #   runs-on: ubuntu-22.04
+
+  #   permissions:
+  #     contents: write
+  #     pull-requests: write
+
+  #   steps:
