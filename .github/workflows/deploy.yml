@@ -9,7 +9,7 @@ jobs:
   deploy:
     name: 'deploy github pages'
     runs-on: ubuntu-22.04
-    if: ${{ github.repository == 'bakkot/ecma262-github-actions' }}
+    if: ${{ github.repository == 'bakkot/ecma262-github-actions-testing' }}
 
     steps:
       - uses: actions/checkout@v4
