@@ -4,6 +4,8 @@ on: [pull_request_target]
 
 jobs:
   check-membership:
+    name: 'check membership'
+    runs-on: ubuntu-22.04
     outputs:
       result: ${{ steps.test-membership.outputs.result }}
     steps:
@@ -30,6 +32,8 @@ jobs:
       - run: echo "${{steps.test-membership.outputs.result}}"
 
   build:
+    name: 'check membership'
+    runs-on: ubuntu-22.04
     needs: check-membership
     if: needs.check-membership.result == 'yes'
     steps:
