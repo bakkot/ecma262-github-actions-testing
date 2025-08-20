@@ -1,0 +1,35 @@
+name: 'pr previews'
+
+on: [pull_request]
+
+jobs:
+  build:
+    name: 'build & lint ecmarkup'
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ljharb/actions/node/install@7f214d8efdbdcefc96ad9689663ef387a195deec
+        name: 'nvm install lts/* && npm ci --no-audit'
+        env:
+          NPM_CONFIG_AUDIT: false
+        with:
+          node-version: lts/*
+          use-npm-ci: true
+      - run: npm run build-only
+      - run: node scripts/insert_snapshot_warning
+      - run: ./scripts/auto-deploy.sh --pr ${{ github.event.number }}
+      - run:
+      - id: get-preview-url
+        name: Get preview url
+        run: |
+          gh_pages_url="https://$(printf '%s' "$GITHUB_REPOSITORY" \
+            | sed 's#/#.github.io/#; s#^tc39.github.io/#tc39.es/#')"
+          echo "url=$gh_pages_url" >> $GITHUB_OUTPUT
+      - name: Post Preview Comment
+        uses: phulsechinmay/rewritable-pr-comment@v0.3.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMENT_IDENTIFIER: tc39_pr_preview_comment
+          message: |
+            The rendered spec for this PR is available at ${{ steps.get-preview-url.outputs.url }}.
