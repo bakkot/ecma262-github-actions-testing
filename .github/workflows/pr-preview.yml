@@ -18,7 +18,7 @@ jobs:
           script: |
             const author = process.env.TITLE;
             try {
-              const result = await octokit.request('GET /orgs/{org}/members/{username}', {
+              const result = await github.request('GET /orgs/{org}/members/{username}', {
                 org: 'tc39',
                 username: author,
                 headers: {
