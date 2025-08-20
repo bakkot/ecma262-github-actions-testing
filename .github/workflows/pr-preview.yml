@@ -1,6 +1,8 @@
 name: 'ecma262'
 
-on: [pull_request_target]
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, labeled]
 
 jobs:
   check-membership:
@@ -8,9 +10,26 @@ jobs:
     runs-on: ubuntu-22.04
     outputs:
       result: ${{ steps.test-membership.outputs.result }}
+      should-run: ${{ steps.should-run.outputs.result }}
     steps:
       - uses: actions/github-script@v7
+        id: should-run
+        with:
+          result-encoding: string
+          script: |
+            const { action, label } = context.payload;
+
+            // Run on opened/synchronize for members, or when preview label is added
+            if (action === 'labeled' && label?.name === 'preview') {
+              return 'yes';
+            } else if (action === 'opened' || action === 'synchronize') {
+              return 'check-membership';
+            }
+            return 'no';
+
+      - uses: actions/github-script@v7
         id: test-membership
+        if: steps.should-run.outputs.result == 'check-membership'
         env:
           AUTHOR: ${{ github.event.pull_request.user.login }}
         with:
@@ -34,16 +53,28 @@ jobs:
       - run: echo "${{steps.test-membership.outputs.result}}"
 
   build:
-    name: 'build/upload preview'
+    name: 'publish PR preview'
     runs-on: ubuntu-22.04
     needs: check-membership
-    if: needs.check-membership.outputs.result == 'yes'
+    if: needs.check-membership.outputs.should-run == 'yes' || (needs.check-membership.outputs.should-run == 'check-membership' && needs.check-membership.outputs.result == 'yes')
 
     permissions:
       contents: write
       pull-requests: write
 
     steps:
+      - name: Remove preview label
+        if: github.event.action == 'labeled' && github.event.label.name == 'preview'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.removeLabel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              name: 'preview'
+            });
+
       - uses: actions/checkout@v4
       - uses: ljharb/actions/node/install@7f214d8efdbdcefc96ad9689663ef387a195deec
         name: 'nvm install lts/* && npm ci --no-audit'
@@ -63,7 +94,7 @@ jobs:
           gh_pages_url="https://$(printf '%s' "$GITHUB_REPOSITORY" \
             | sed 's#/#.github.io/#; s#^tc39.github.io/#tc39.es/#')"
           echo "url=$gh_pages_url" >> $GITHUB_OUTPUT
-      - name: Post Preview Comment
+      - name: Post preview comment
         uses: phulsechinmay/rewritable-pr-comment@v0.3.0
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
