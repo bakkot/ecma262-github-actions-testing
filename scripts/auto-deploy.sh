@@ -3,13 +3,15 @@
 set -euxo pipefail
 
 DEST_DIR="gh-pages"
+COMMIT_MESSAGE="Update gh-pages"
 if [[ "$1" == "--pr" && -n "$2" ]]; then
   DEST_DIR="gh-pages/pr/$2"
+  COMMIT_MESSAGE="Update gh-pages for PR $2"
 fi
 
 declare -r GH_USER_EMAIL="bot@tc39"
 declare -r GH_USER_NAME="Bot"
-declare -r COMMIT_MESSAGE="Update gh-pages"
+declare -r COMMIT_MESSAGE
 
 
 cd "$(dirname "$BASH_SOURCE")"/..
