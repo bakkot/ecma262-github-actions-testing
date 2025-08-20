@@ -19,8 +19,8 @@ jobs:
           script: |
             const { action, label } = context.payload;
 
-            // Run on opened/synchronize for members, or when preview label is added
-            if (action === 'labeled' && label?.name === 'preview') {
+            // Run on opened/synchronize for members, or when 'request preview' label is added
+            if (action === 'labeled' && label?.name === 'request preview') {
               return 'yes';
             } else if (action === 'opened' || action === 'synchronize') {
               return 'check-membership';
@@ -63,8 +63,8 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Remove preview label
-        if: github.event.action == 'labeled' && github.event.label.name == 'preview'
+      - name: Remove 'request preview' label
+        if: github.event.action == 'labeled' && github.event.label.name == 'request preview'
         uses: actions/github-script@v7
         with:
           script: |
@@ -72,7 +72,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              name: 'preview'
+              name: 'request preview'
             });
 
       - uses: actions/checkout@v4
