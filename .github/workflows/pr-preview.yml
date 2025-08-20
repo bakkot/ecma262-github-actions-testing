@@ -1,21 +1,18 @@
-name: 'pr previews'
+name: 'ecma262'
 
 on: [pull_request]
 
 jobs:
   build:
-    name: 'build & lint ecmarkup'
+    name: 'publish PR preview'
     runs-on: ubuntu-22.04
 
     steps:
       - uses: actions/checkout@v4
-      - uses: ljharb/actions/node/install@7f214d8efdbdcefc96ad9689663ef387a195deec
-        name: 'nvm install lts/* && npm ci --no-audit'
-        env:
-          NPM_CONFIG_AUDIT: false
+      - uses: actions/setup-node@v4
         with:
           node-version: lts/*
-          use-npm-ci: true
+      - run: npm ci --no-audit
       - run: npm run build-only
       - run: node scripts/insert_snapshot_warning
       - run: ./scripts/auto-deploy.sh --pr ${{ github.event.number }}
