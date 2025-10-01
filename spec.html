@@ -54,16 +54,22 @@
   /**
   * ECMA-262-specific hacks. Shouldn't require a ton of maintenance; audit if
   * visual inspection results in unexpected page breaks.
+  *
+  * For print version, the table captioned "Module fields after the initial Evaluate() call" _may_ need to set the row
+  * EVALUATING-ASYNC to one cell with a colspan of 5. It typically does not fit on the page, but the cell merging is
+  * not a perfectly accurate solution and will not be merged back in to the specification.
+  * See https://github.com/tc39/ecma262/pull/3623#issuecomment-3029366960
   */
+
+  /* Make sure tables are wide enough for their captions */
+  table {
+    min-width: 135mm;
+  }
+
   /* 2.2 Examples of legacy/normative-optional are small enough to be aggressive against breaks */
   #sec-conformance [example],
-
-  /* 8.3.3 avoid breaking in small alg lists */
-  #sec-static-semantics-containsundefinedcontinuetarget li,
-
-  /* 16.2.1.5.4 many tables */
-  #table-module-graph-cycle-async-fields-1 table,
-  #table-module-graph-cycle-async-fields-9 table {
+  /* 16.2.1.xxx many tables */
+  #sec-example-cyclic-module-record-graphs table {
     break-inside: avoid-page;
   }
 
@@ -73,7 +79,7 @@
     break-inside: initial;
   }
 
-  /* 12.10.2, 12.10.3, 12.10.3.2 Sections start with an <em> not inside a <p> */
+  /* 12.10.X Sections start with an <em> not inside a <p> */
   #sec-examples-of-automatic-semicolon-insertion > em,
   #sec-interesting-cases-of-automatic-semicolon-insertion > em,
   #sec-asi-cases-with-no-lineterminator-here > em {
@@ -81,7 +87,7 @@
     margin-top: 1.25ex;
   }
 
-  /* 15.1.2 bad spacing between intro and first emu-grammar */
+  /* 15.1.X missing spacing between intro and first emu-grammar */
   #sec-static-semantics-containsexpression > emu-grammar:first-of-type {
     margin-top: 2ex;
   }
@@ -91,63 +97,18 @@
     text-align: left;
   }
 
-  /* 16.2.1.5.4 squish margins on graphics so table 46 fits on one page */
-  #sec-example-cyclic-module-record-graphs figure:has(> img),
-  #sec-example-cyclic-module-record-graphs figure > img {
-    margin: 0;
-  }
-  #sec-example-cyclic-module-record-graphs figure:has(> img) > figcaption {
-    margin-bottom: 1ex;
-  }
-  #sec-example-cyclic-module-record-graphs emu-figure:has(> figure > img) + p {
-    margin-top: 1ex;
-  }
-
-  /* 16.2.1.5.4 table 51 & 54 are too narrow for caption */
-  #table-module-graph-cycle-async-fields-6 table {
-    width: 110mm;
-  }
-  #table-module-graph-cycle-async-fields-9 table {
-    width: 135mm;
-  }
-
-  /* 20.1.3.7 legacy title */
+  /* 20.X legacy title */
   #sec-object\.prototype\.__proto__ > .attributes-tag {
     break-before: avoid-page;
     break-after: avoid-page;
   }
 
-  /* 21.4.1.22 Table 61 middle column is too narrow */
+  /* 21.X table middle column is too narrow */
   #table-time-zone-identifier-record-fields > figure > table th:nth-of-type(2) {
-    width: 15%;
+    min-width: 19mm;
   }
 
-  /* 21.4.4.41.2 These tables are way too narrow for their captions */
-  #sec-todatestring-day-names table,
-  #sec-todatestring-month-names table {
-    width: 100mm;
-  }
-
-  /* 27.2.6 squeeze to make more room for figure-2.svg */
-  #table-internal-slots-of-promise-instances > figure {
-    margin-bottom: 0;
-  }
-
-  /* 27.3 fit generator objects relationships diagram */
-  #sec-generatorfunction-objects,
-  #sec-generatorfunction-objects h1 {
-    margin-top: 1.5ex;
-  }
-
-  /* 27.3 `figure-2.svg` is just a tiny bit too big to fit on the page, results in weird white space */
-  #figure-2 figure {
-    margin: 1ex 0;
-  }
-  #figure-2 > figure > img {
-    width: 97%;
-  }
-
-  /* 29.11 extremely long note */
+  /* 29.X extremely long note */
   #sec-shared-memory-guidelines > emu-note {
     break-inside: auto;
   }
@@ -163,8 +124,9 @@
   }
 
   .corner-cell {
-    background-image: url(data:image/svg+xml;base64,PHN2ZyBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbWl0ZXJsaW1pdD0iMS41IiB2aWV3Qm94PSIwIDAgMjQyIDQ2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48Y2xpcFBhdGggaWQ9ImEiPjxwYXRoIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0ibS03Ny43MDQtMzYuMDI3aDI0MS4wNDJ2NDUuMDQyaC0yNDEuMDQyeiIvPjwvY2xpcFBhdGg+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNzcuNzAzOSAzNi4wMjY2KSI+PHBhdGggZD0ibS03Ny43MDQtMzYuMDI3aDI0MS4wNDJ2NDUuMDQyaC0yNDEuMDQyeiIgZmlsbD0ibm9uZSIvPjxnIGNsaXAtcGF0aD0idXJsKCNhKSI+PHBhdGggZD0ibTMxNC45MyAzOTUuOTM1IDI0MS4wNDIgNDUuMDQyIiBmaWxsPSJub25lIiBzdHJva2U9IiMyMzFmMjAiIHN0cm9rZS13aWR0aD0iMS4wNCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTM5Mi42MzQgLTQzMS45NjIpIi8+PC9nPjwvZz48L3N2Zz4=);
-    background-size: cover;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGZpbGwtcnVsZT0iZXZlbm9kZCIgaGVpZ2h0PSI0NiIgc3Ryb2tlLWxpbmVjYXA9InNxdWFyZSIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLW1pdGVybGltaXQ9IjEuNSIgd2lkdGg9IjI0MiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtMzE1LjI2NiAzOTYuMzQzIDI0MS4zOTQgNDUuMTU1IiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS4wNCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMxNC45MyAtMzk1LjkzNSkiLz48L3N2Zz4=);
+    background-repeat: no-repeat;
+    background-size: 100% 3em;
     height: 3em;
     padding: 0;
     vertical-align: inherit;
@@ -212,7 +174,7 @@
     <li>
       Editors:
       <ul>
-        <li><a href="mailto:syg at google dot com">Shu-yu Guo</a></li>
+        <li><a href="mailto:shu at rfrn dot org">Shu-yu Guo</a></li>
         <li><a href="mailto:ecma262-editor-list at michael dot ficarra dot me">Michael Ficarra</a> (<a href="https://bsky.app/profile/michael.ficarra.me">@michael.ficarra.me</a>)</li>
         <li><a href="mailto:bakkot at gmail dot com">Kevin Gibbons</a></li>
       </ul>
@@ -291,7 +253,7 @@
   <p>A conforming implementation of ECMAScript may support program and regular expression syntax not described in this specification. In particular, a conforming implementation of ECMAScript may support program syntax that makes use of any “future reserved words” noted in subclause <emu-xref href="#sec-keywords-and-reserved-words"></emu-xref> of this specification.</p>
   <p>A conforming implementation of ECMAScript must not implement any extension that is listed as a Forbidden Extension in subclause <emu-xref href="#sec-forbidden-extensions"></emu-xref>.</p>
   <p>A conforming implementation of ECMAScript must not redefine any facilities that are not implementation-defined, implementation-approximated, or host-defined.</p>
-  <p>A conforming implementation of ECMAScript may choose to implement or not implement <dfn>Normative Optional</dfn> subclauses. If any Normative Optional behaviour is implemented, all of the behaviour in the containing Normative Optional clause must be implemented. A Normative Optional clause is denoted in this specification with the words "Normative Optional" in a coloured box, as shown below.</p>
+  <p>A conforming implementation of ECMAScript may choose to implement or not implement <dfn>Normative Optional</dfn> subclauses, unless otherwise indicated. Web browsers are generally required to implement all normative optional subclauses. (See Annex <emu-xref href="#sec-additional-ecmascript-features-for-web-browsers"></emu-xref>.) If any Normative Optional behaviour is implemented, all of the behaviour in the containing Normative Optional clause must be implemented. A Normative Optional clause is denoted in this specification with the words "Normative Optional" in a coloured box, as shown below.</p>
 
   <emu-clause id="sec-conformance-normative-optional" oldids="sec-conformance.normative-optional" example normative-optional>
     <h1>Example Normative Optional Clause Heading</h1>
@@ -1366,8 +1328,8 @@
     <emu-clause id="sec-ecmascript-language-types-symbol-type">
       <h1>The Symbol Type</h1>
       <p>The <dfn variants="is a Symbol,is not a Symbol">Symbol type</dfn> is the set of all non-String values that may be used as the key of an Object property (<emu-xref href="#sec-object-type"></emu-xref>).</p>
-      <p>Each possible Symbol value is unique and immutable.</p>
-      <p>Each Symbol value immutably holds an associated value called [[Description]] that is either *undefined* or a String value.</p>
+      <p>Each Symbol is unique and immutable.</p>
+      <p>Each Symbol has an immutable [[Description]] internal slot whose value is either a String or *undefined*.</p>
 
       <emu-clause id="sec-well-known-symbols">
         <h1>Well-Known Symbols</h1>
@@ -2879,7 +2841,7 @@
           An <dfn variants="accessor properties">accessor property</dfn> associates a key value with one or two accessor functions, and a set of Boolean attributes. The accessor functions are used to store or retrieve an ECMAScript language value that is associated with the property.
         </li>
       </ul>
-      <p>The properties of an object are uniquely identified using property keys. A <dfn id="property-key" variants="property keys" oldids="sec-ispropertykey">property key</dfn> is either a String or a Symbol. All Strings and Symbols, including the empty String, are valid as property keys. A <dfn id="property-name">property name</dfn> is a property key that is a String.</p>
+      <p>The properties of an object are uniquely identified using property keys. A <dfn id="property-key" variants="property keys" oldids="sec-ispropertykey">property key</dfn> is either a String or a Symbol. All Strings and Symbols, including the empty String, are valid as property keys. A <dfn id="property-name" variants="property names">property name</dfn> is a property key that is a String.</p>
       <p>An <dfn id="integer-index" variants="integer indices,integer-indexed">integer index</dfn> is a property name _n_ such that CanonicalNumericIndexString(_n_) returns an integral Number in the inclusive interval from *+0*<sub>𝔽</sub> to 𝔽(2<sup>53</sup> - 1). An <dfn id="array-index" variants="array indices">array index</dfn> is an integer index _n_ such that CanonicalNumericIndexString(_n_) returns an integral Number in the inclusive interval from *+0*<sub>𝔽</sub> to 𝔽(2<sup>32</sup> - 2).</p>
       <emu-note>
         <p>Every non-negative safe integer has a corresponding integer index. Every 32-bit unsigned integer except <emu-eqn>2<sup>32</sup> - 1</emu-eqn> has a corresponding array index. *"-0"* is neither an integer index nor an array index.</p>
@@ -3012,7 +2974,7 @@
         <h1>Object Internal Methods and Internal Slots</h1>
         <p>The actual semantics of objects, in ECMAScript, are specified via algorithms called <em>internal methods</em>. Each object in an ECMAScript engine is associated with a set of internal methods that defines its runtime behaviour. These internal methods are not part of the ECMAScript language. They are defined by this specification purely for expository purposes. However, each object within an implementation of ECMAScript must behave as specified by the internal methods associated with it. The exact manner in which this is accomplished is determined by the implementation.</p>
         <p>Internal method names are polymorphic. This means that different object values may perform different algorithms when a common internal method name is invoked upon them. That actual object upon which an internal method is invoked is the “target” of the invocation. If, at runtime, the implementation of an algorithm attempts to use an internal method of an object that the object does not support, a *TypeError* exception is thrown.</p>
-        <p>Internal slots correspond to internal state that is associated with objects and used by various ECMAScript specification algorithms. Internal slots are not object properties and they are not inherited. Depending upon the specific internal slot specification, such state may consist of values of any ECMAScript language type or of specific ECMAScript specification type values. Unless explicitly specified otherwise, internal slots are allocated as part of the process of creating an object and may not be dynamically added to an object. Unless specified otherwise, the initial value of an internal slot is the value *undefined*. Various algorithms within this specification create objects that have internal slots. However, the ECMAScript language provides no direct way to associate internal slots with an object.</p>
+        <p>Internal slots correspond to internal state that is associated with objects, Symbols, or Private Names and used by various ECMAScript specification algorithms. Internal slots are not object properties and they are not inherited. Depending upon the specific internal slot specification, such state may consist of values of any ECMAScript language type or of specific ECMAScript specification type values. Unless explicitly specified otherwise, internal slots are allocated as part of the process of creating an object, Symbol, or Private Name and may not be dynamically added. Unless specified otherwise, the initial value of an internal slot is the value *undefined*. Various algorithms within this specification create values that have internal slots. However, the ECMAScript language provides no direct way to manipulate internal slots.</p>
         <p>All objects have an internal slot named [[PrivateElements]], which is a List of PrivateElements. This List represents the values of the private fields, methods, and accessors for the object. Initially, it is an empty List.</p>
         <p>Internal methods and internal slots are identified within this specification using names enclosed in double square brackets [[ ]].</p>
         <p><emu-xref href="#table-essential-internal-methods"></emu-xref> summarizes the <em>essential internal methods</em> used by this specification that are applicable to all objects created or manipulated by ECMAScript code. Every object must have algorithms for all of the essential internal methods. However, all objects do not necessarily use the same algorithms for those methods.</p>
@@ -4984,7 +4946,7 @@
 
     <emu-clause id="sec-private-names">
       <h1>Private Names</h1>
-      <p>The <dfn variants="Private Names">Private Name</dfn> specification type is used to describe a globally unique value (one which differs from any other Private Name, even if they are otherwise indistinguishable) which represents the key of a private class element (field, method, or accessor). Each Private Name has an associated immutable [[Description]] which is a String value. A Private Name may be installed on any ECMAScript object with PrivateFieldAdd or PrivateMethodOrAccessorAdd, and then read or written using PrivateGet and PrivateSet.</p>
+      <p>The <dfn variants="Private Names">Private Name</dfn> specification type is used to describe a globally unique value (one which differs from any other Private Name, even if they are otherwise indistinguishable) which represents the key of a private class element (field, method, or accessor). Each Private Name has an immutable [[Description]] internal slot which is a String. A Private Name may be installed on any ECMAScript object with PrivateFieldAdd or PrivateMethodOrAccessorAdd, and then read or written using PrivateGet and PrivateSet.</p>
     </emu-clause>
 
     <emu-clause id="sec-classstaticblockdefinition-record-specification-type">
@@ -5089,7 +5051,7 @@
       </emu-clause>
     </emu-clause>
 
-    <emu-clause id="sec-toboolean" oldids="table-toboolean-conversions" type="abstract operation">
+    <emu-clause id="sec-toboolean" oldids="table-toboolean-conversions,sec-IsHTMLDDA-internal-slot-to-boolean" type="abstract operation">
       <h1>
         ToBoolean (
           _argument_: an ECMAScript language value,
@@ -5102,7 +5064,8 @@
       <emu-alg>
         1. If _argument_ is a Boolean, return _argument_.
         1. If _argument_ is one of *undefined*, *null*, *+0*<sub>𝔽</sub>, *-0*<sub>𝔽</sub>, *NaN*, *0*<sub>ℤ</sub>, or the empty String, return *false*.
-        1. [id="step-to-boolean-web-compat-insertion-point"] NOTE: This step is replaced in section <emu-xref href="#sec-IsHTMLDDA-internal-slot-to-boolean"></emu-xref>.
+        1. [id="step-to-boolean-web-compat-insertion-point", normative-optional] If the host is a web browser or otherwise supports <emu-xref href="#sec-IsHTMLDDA-internal-slot" title></emu-xref>, then
+          1. If _argument_ is an Object and _argument_ has an [[IsHTMLDDA]] internal slot, return *false*.
         1. Return *true*.
       </emu-alg>
     </emu-clause>
@@ -5695,7 +5658,7 @@
       </emu-alg>
     </emu-clause>
 
-    <emu-clause id="sec-toobject" type="abstract operation">
+    <emu-clause id="sec-toobject" type="abstract operation" oldids="table-toobject-conversions,table-13">
       <h1>
         ToObject (
           _argument_: an ECMAScript language value,
@@ -5703,86 +5666,18 @@
       </h1>
       <dl class="header">
         <dt>description</dt>
-        <dd>It converts _argument_ to a value of type Object according to <emu-xref href="#table-toobject-conversions"></emu-xref>:</dd>
+        <dd>It converts _argument_ to a value of type Object.</dd>
       </dl>
-      <emu-table id="table-toobject-conversions" caption="ToObject Conversions" oldids="table-13">
-        <table>
-          <thead>
-            <tr>
-              <th>
-                Argument Type
-              </th>
-              <th>
-                Result
-              </th>
-            </tr>
-          </thead>
-          <tr>
-            <td>
-              Undefined
-            </td>
-            <td>
-              Throw a *TypeError* exception.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Null
-            </td>
-            <td>
-              Throw a *TypeError* exception.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Boolean
-            </td>
-            <td>
-              Return a new Boolean object whose [[BooleanData]] internal slot is set to _argument_. See <emu-xref href="#sec-boolean-objects"></emu-xref> for a description of Boolean objects.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Number
-            </td>
-            <td>
-              Return a new Number object whose [[NumberData]] internal slot is set to _argument_. See <emu-xref href="#sec-number-objects"></emu-xref> for a description of Number objects.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              String
-            </td>
-            <td>
-              Return a new String object whose [[StringData]] internal slot is set to _argument_. See <emu-xref href="#sec-string-objects"></emu-xref> for a description of String objects.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Symbol
-            </td>
-            <td>
-              Return a new Symbol object whose [[SymbolData]] internal slot is set to _argument_. See <emu-xref href="#sec-symbol-objects"></emu-xref> for a description of Symbol objects.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              BigInt
-            </td>
-            <td>
-              Return a new BigInt object whose [[BigIntData]] internal slot is set to _argument_. See <emu-xref href="#sec-bigint-objects"></emu-xref> for a description of BigInt objects.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Object
-            </td>
-            <td>
-              Return _argument_.
-            </td>
-          </tr>
-        </table>
-      </emu-table>
+      <emu-alg>
+        1. If _argument_ is either *undefined* or *null*, throw a *TypeError* exception.
+        1. If _argument_ is a Boolean, return a new Boolean object whose [[BooleanData]] internal slot is set to _argument_. See <emu-xref href="#sec-boolean-objects"></emu-xref> for a description of Boolean objects.
+        1. If _argument_ is a Number, return a new Number object whose [[NumberData]] internal slot is set to _argument_. See <emu-xref href="#sec-number-objects"></emu-xref> for a description of Number objects.
+        1. If _argument_ is a String, return a new String object whose [[StringData]] internal slot is set to _argument_. See <emu-xref href="#sec-string-objects"></emu-xref> for a description of String objects.
+        1. If _argument_ is a Symbol, return a new Symbol object whose [[SymbolData]] internal slot is set to _argument_. See <emu-xref href="#sec-symbol-objects"></emu-xref> for a description of Symbol objects.
+        1. If _argument_ is a BigInt, return a new BigInt object whose [[BigIntData]] internal slot is set to _argument_. See <emu-xref href="#sec-bigint-objects"></emu-xref> for a description of BigInt objects.
+        1. Assert: _argument_ is an Object.
+        1. Return _argument_.
+      </emu-alg>
     </emu-clause>
 
     <emu-clause id="sec-topropertykey" type="abstract operation">
@@ -5860,94 +5755,20 @@
   <emu-clause id="sec-testing-and-comparison-operations">
     <h1>Testing and Comparison Operations</h1>
 
-    <emu-clause id="sec-requireobjectcoercible" type="abstract operation">
+    <emu-clause id="sec-requireobjectcoercible" type="abstract operation" oldids="table-requireobjectcoercible-results,table-14">
       <h1>
         RequireObjectCoercible (
           _argument_: an ECMAScript language value,
-        ): either a normal completion containing an ECMAScript language value or a throw completion
+        ): either a normal completion containing ~unused~ or a throw completion
       </h1>
       <dl class="header">
         <dt>description</dt>
-        <dd>It throws an error if _argument_ is a value that cannot be converted to an Object using ToObject. It is defined by <emu-xref href="#table-requireobjectcoercible-results"></emu-xref>:</dd>
+        <dd>It throws an error if _argument_ is a value that cannot be converted to an Object using ToObject.</dd>
       </dl>
-      <emu-table id="table-requireobjectcoercible-results" caption="RequireObjectCoercible Results" oldids="table-14">
-        <table>
-          <thead>
-            <tr>
-              <th>
-                Argument Type
-              </th>
-              <th>
-                Result
-              </th>
-            </tr>
-          </thead>
-          <tr>
-            <td>
-              Undefined
-            </td>
-            <td>
-              Throw a *TypeError* exception.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Null
-            </td>
-            <td>
-              Throw a *TypeError* exception.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Boolean
-            </td>
-            <td>
-              Return _argument_.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Number
-            </td>
-            <td>
-              Return _argument_.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              String
-            </td>
-            <td>
-              Return _argument_.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Symbol
-            </td>
-            <td>
-              Return _argument_.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              BigInt
-            </td>
-            <td>
-              Return _argument_.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Object
-            </td>
-            <td>
-              Return _argument_.
-            </td>
-          </tr>
-        </table>
-      </emu-table>
+      <emu-alg>
+        1. If _argument_ is either *undefined* or *null*, throw a *TypeError* exception.
+        1. Return ~unused~.
+      </emu-alg>
     </emu-clause>
 
     <emu-clause id="sec-isarray" type="abstract operation">
@@ -6214,7 +6035,7 @@
       </emu-note>
     </emu-clause>
 
-    <emu-clause id="sec-islooselyequal" type="abstract operation" oldids="sec-abstract-equality-comparison">
+    <emu-clause id="sec-islooselyequal" type="abstract operation" oldids="sec-abstract-equality-comparison,sec-IsHTMLDDA-internal-slot-aec">
       <h1>
         IsLooselyEqual (
           _x_: an ECMAScript language value,
@@ -6230,7 +6051,9 @@
           1. Return IsStrictlyEqual(_x_, _y_).
         1. If _x_ is *null* and _y_ is *undefined*, return *true*.
         1. If _x_ is *undefined* and _y_ is *null*, return *true*.
-        1. [id="step-abstract-equality-comparison-web-compat-insertion-point"] NOTE: This step is replaced in section <emu-xref href="#sec-IsHTMLDDA-internal-slot-aec"></emu-xref>.
+        1. [id="step-abstract-equality-comparison-web-compat-insertion-point", normative-optional] If the host is a web browser or otherwise supports <emu-xref href="#sec-IsHTMLDDA-internal-slot" title></emu-xref>, then
+          1. If _x_ is an Object, _x_ has an [[IsHTMLDDA]] internal slot, and _y_ is either *undefined* or *null*, return *true*.
+          1. If _x_ is either *undefined* or *null*, _y_ is an Object, and _y_ has an [[IsHTMLDDA]] internal slot, return *true*.
         1. If _x_ is a Number and _y_ is a String, return ! IsLooselyEqual(_x_, ! ToNumber(_y_)).
         1. If _x_ is a String and _y_ is a Number, return ! IsLooselyEqual(! ToNumber(_x_), _y_).
         1. If _x_ is a BigInt and _y_ is a String, then
@@ -6989,7 +6812,7 @@
       <h1>
         InitializeInstanceElements (
           _O_: an Object,
-          _constructor_: an ECMAScript function object,
+          _constructor_: an ECMAScript function object or a built-in function object,
         ): either a normal completion containing ~unused~ or a throw completion
       </h1>
       <dl class="header">
@@ -7064,8 +6887,14 @@
       </emu-alg>
     </emu-clause>
 
-    <emu-clause id="sec-getoptionsobject" aoid="GetOptionsObject">
-      <h1>GetOptionsObject ( _options_ )</h1>
+    <emu-clause id="sec-getoptionsobject" type="abstract operation">
+      <h1>
+        GetOptionsObject (
+          _options_: an ECMAScript language value,
+        ): either a normal completion containing an Object or a throw completion
+      </h1>
+      <dl class="header">
+      </dl>
       <emu-alg>
         1. If _options_ is *undefined*, then
           1. Return OrdinaryObjectCreate(*null*).
@@ -9502,9 +9331,8 @@
       </emu-alg>
       <emu-grammar>ClassExpression : `class` ClassTail</emu-grammar>
       <emu-alg>
-        1. Let _value_ be ? ClassDefinitionEvaluation of |ClassTail| with arguments *undefined* and _name_.
-        1. Set _value_.[[SourceText]] to the source text matched by |ClassExpression|.
-        1. Return _value_.
+        1. Let _sourceText_ be the source text matched by |ClassExpression|.
+        1. Return ? ClassDefinitionEvaluation of |ClassTail| with arguments *undefined*, _name_, and _sourceText_.
       </emu-alg>
     </emu-clause>
   </emu-clause>
@@ -13828,7 +13656,7 @@
       <emu-alg>
         1. Assert: _F_ is an extensible object that does not have a *"name"* own property.
         1. If _name_ is a Symbol, then
-          1. Let _description_ be _name_'s [[Description]] value.
+          1. Let _description_ be _name_.[[Description]].
           1. If _description_ is *undefined*, set _name_ to the empty String.
           1. Else, set _name_ to the string-concatenation of *"["*, _description_, and *"]"*.
         1. Else if _name_ is a Private Name, then
@@ -13838,6 +13666,7 @@
         1. If _prefix_ is present, then
           1. Set _name_ to the string-concatenation of _prefix_, the code unit 0x0020 (SPACE), and _name_.
           1. If _F_ has an [[InitialName]] internal slot, then
+            1. NOTE: The choice in the following step is made independently each time this Abstract Operation is invoked.
             1. Optionally, set _F_.[[InitialName]] to _name_.
         1. Perform ! DefinePropertyOrThrow(_F_, *"name"*, PropertyDescriptor { [[Value]]: _name_, [[Writable]]: *false*, [[Enumerable]]: *false*, [[Configurable]]: *true* }).
         1. Return ~unused~.
@@ -13862,7 +13691,7 @@
       </emu-alg>
     </emu-clause>
 
-    <emu-clause id="sec-functiondeclarationinstantiation" type="abstract operation">
+    <emu-clause id="sec-functiondeclarationinstantiation" type="abstract operation" oldids="sec-web-compat-functiondeclarationinstantiation">
       <h1>
         FunctionDeclarationInstantiation (
           _func_: an ECMAScript function object,
@@ -13877,11 +13706,6 @@
         <p>When an execution context is established for evaluating an ECMAScript function a new Function Environment Record is created and bindings for each formal parameter are instantiated in that Environment Record. Each declaration in the function body is also instantiated. If the function's formal parameters do not include any default value initializers then the body declarations are instantiated in the same Environment Record as the parameters. If default value parameter initializers exist, a second Environment Record is created for the body declarations. Formal parameters and functions are initialized as part of FunctionDeclarationInstantiation. All other bindings are initialized during evaluation of the function body.</p>
       </emu-note>
       <p>It performs the following steps when called:</p>
-      <!--
-        WARNING: If you add, remove, rename, or repurpose any variable names
-                 within this algorithm, you may need to update
-                 #sec-web-compat-functiondeclarationinstantiation accordingly.
-      -->
       <emu-alg>
         1. Let _calleeContext_ be the running execution context.
         1. Let _code_ be _func_.[[ECMAScriptCode]].
@@ -13975,12 +13799,26 @@
                 1. Let _initialValue_ be ! _env_.GetBindingValue(_n_, *false*).
               1. Perform ! _varEnv_.InitializeBinding(_n_, _initialValue_).
               1. NOTE: A var with the same name as a formal parameter initially has the same value as the corresponding initialized parameter.
-        1. [id="step-functiondeclarationinstantiation-web-compat-insertion-point"] NOTE: Annex <emu-xref href="#sec-web-compat-functiondeclarationinstantiation"></emu-xref> adds additional steps at this point.
-        1. If _strict_ is *false*, then
+        1. If _strict_ is *true*, then
+          1. Let _lexEnv_ be _varEnv_.
+        1. Else,
+          1. [id="step-functiondeclarationinstantiation-web-compat-insertion-point", normative-optional] If the host is a web browser or otherwise supports <emu-xref href="#sec-block-level-function-declarations-web-legacy-compatibility-semantics" title></emu-xref>, then
+            1. For each |FunctionDeclaration| _f_ that is directly contained in the |StatementList| of any |Block|, |CaseClause|, or |DefaultClause| _x_ such that _code_ Contains _x_ is *true*, do
+              1. Let _F_ be the StringValue of the |BindingIdentifier| of _f_.
+              1. If replacing the |FunctionDeclaration| _f_ with a |VariableStatement| that has _F_ as a |BindingIdentifier| would not produce any Early Errors for _func_ and _parameterNames_ does not contain _F_, then
+                1. NOTE: A var binding for _F_ is only instantiated here if it is neither a VarDeclaredName, the name of a formal parameter, or another |FunctionDeclaration|.
+                1. If _instantiatedVarNames_ does not contain _F_ and _F_ is not *"arguments"*, then
+                  1. Perform ! _varEnv_.CreateMutableBinding(_F_, *false*).
+                  1. Perform ! _varEnv_.InitializeBinding(_F_, *undefined*).
+                  1. Append _F_ to _instantiatedVarNames_.
+                1. [id="step-functiondeclarationinstantiation-alt-funcdecl-eval"] When the |FunctionDeclaration| _f_ is evaluated, perform the following steps in place of the |FunctionDeclaration| Evaluation algorithm provided in <emu-xref href="#sec-function-definitions-runtime-semantics-evaluation"></emu-xref>:
+                  1. Let _fEnv_ be the running execution context's VariableEnvironment.
+                  1. Let _bEnv_ be the running execution context's LexicalEnvironment.
+                  1. Let _fObj_ be ! _bEnv_.GetBindingValue(_F_, *false*).
+                  1. Perform ! _fEnv_.SetMutableBinding(_F_, _fObj_, *false*).
+                  1. Return ~unused~.
           1. Let _lexEnv_ be NewDeclarativeEnvironment(_varEnv_).
           1. NOTE: Non-strict functions use a separate Environment Record for top-level lexical declarations so that a direct eval can determine whether any var scoped declarations introduced by the eval code conflict with pre-existing top-level lexically scoped declarations. This is not needed for strict functions because a strict direct eval always places all declarations into a new Environment Record.
-        1. Else,
-          1. Let _lexEnv_ be _varEnv_.
         1. Set the LexicalEnvironment of _calleeContext_ to _lexEnv_.
         1. Let _lexDeclarations_ be the LexicallyScopedDeclarations of _code_.
         1. For each element _d_ of _lexDeclarations_, do
@@ -13997,9 +13835,6 @@
           1. Perform ! _varEnv_.SetMutableBinding(_fn_, _fo_, *false*).
         1. Return ~unused~.
       </emu-alg>
-      <emu-note>
-        <p><emu-xref href="#sec-block-level-function-declarations-web-legacy-compatibility-semantics"></emu-xref> provides an extension to the above algorithm that is necessary for backwards compatibility with web browser implementations of ECMAScript that predate ECMAScript 2015.</p>
-      </emu-note>
     </emu-clause>
   </emu-clause>
 
@@ -20206,7 +20041,7 @@
     <emu-clause id="sec-typeof-operator">
       <h1>The `typeof` Operator</h1>
 
-      <emu-clause id="sec-typeof-operator-runtime-semantics-evaluation" oldids="table-typeof-operator-results" type="sdo">
+      <emu-clause id="sec-typeof-operator-runtime-semantics-evaluation" oldids="table-typeof-operator-results,sec-IsHTMLDDA-internal-slot-typeof" type="sdo">
         <h1>Runtime Semantics: Evaluation</h1>
         <emu-grammar>UnaryExpression : `typeof` UnaryExpression</emu-grammar>
         <emu-alg>
@@ -20222,7 +20057,8 @@
           1. If _val_ is a Number, return *"number"*.
           1. If _val_ is a BigInt, return *"bigint"*.
           1. Assert: _val_ is an Object.
-          1. [id="step-typeof-web-compat-insertion-point"] NOTE: This step is replaced in section <emu-xref href="#sec-IsHTMLDDA-internal-slot-typeof"></emu-xref>.
+          1. [id="step-typeof-web-compat-insertion-point", normative-optional] If the host is a web browser or otherwise supports <emu-xref href="#sec-IsHTMLDDA-internal-slot" title></emu-xref>, then
+            1. If _val_ has an [[IsHTMLDDA]] internal slot, return *"undefined"*.
           1. If _val_ has a [[Call]] internal method, return *"function"*.
           1. Return *"object"*.
         </emu-alg>
@@ -21479,12 +21315,16 @@
         Declaration[?Yield, ?Await]
     </emu-grammar>
 
-    <emu-clause id="sec-block-static-semantics-early-errors">
+    <emu-clause id="sec-block-static-semantics-early-errors" oldids="sec-block-duplicates-allowed-static-semantics">
       <h1>Static Semantics: Early Errors</h1>
       <emu-grammar>Block : `{` StatementList `}`</emu-grammar>
       <ul>
         <li>
-          It is a Syntax Error if the LexicallyDeclaredNames of |StatementList| contains any duplicate entries.
+          <p>It is a Syntax Error if the LexicallyDeclaredNames of |StatementList| contains any duplicate entries<span normative-optional>, unless the host is a web browser or otherwise supports <emu-xref href="#sec-block-level-function-declarations-web-legacy-compatibility-semantics" title></emu-xref>, and both of the following conditions are true:</span></p>
+          <ul normative-optional>
+            <li>IsStrict(this production) is *false*.</li>
+            <li>The duplicate entries are only bound by FunctionDeclarations.</li>
+          </ul>
         </li>
         <li>
           It is a Syntax Error if any element of the LexicallyDeclaredNames of |StatementList| also occurs in the VarDeclaredNames of |StatementList|.
@@ -21527,7 +21367,7 @@
       </emu-note>
     </emu-clause>
 
-    <emu-clause id="sec-blockdeclarationinstantiation" type="abstract operation">
+    <emu-clause id="sec-blockdeclarationinstantiation" type="abstract operation" oldids="sec-web-compat-blockdeclarationinstantiation">
       <h1>
         BlockDeclarationInstantiation (
           _code_: a Parse Node,
@@ -21542,11 +21382,6 @@
         <p>When a |Block| or |CaseBlock| is evaluated a new Declarative Environment Record is created and bindings for each block scoped variable, constant, function, or class declared in the block are instantiated in the Environment Record.</p>
       </emu-note>
       <p>It performs the following steps when called:</p>
-      <!--
-        WARNING: If you add, remove, rename, or repurpose any variable names
-                 within this algorithm, you may need to update
-                 #sec-web-compat-blockdeclarationinstantiation accordingly.
-      -->
       <emu-alg>
         1. Let _declarations_ be the LexicallyScopedDeclarations of _code_.
         1. Let _privateEnv_ be the running execution context's PrivateEnvironment.
@@ -21555,11 +21390,22 @@
             1. If IsConstantDeclaration of _d_ is *true*, then
               1. Perform ! _env_.CreateImmutableBinding(_dn_, *true*).
             1. Else,
-              1. [id="step-blockdeclarationinstantiation-createmutablebinding"] Perform ! _env_.CreateMutableBinding(_dn_, *false*). NOTE: This step is replaced in section <emu-xref href="#sec-web-compat-blockdeclarationinstantiation"></emu-xref>.
+              1. [id="step-blockdeclarationinstantiation-createmutablebinding", normative-optional] If the host is a web browser or otherwise supports <emu-xref href="#sec-block-level-function-declarations-web-legacy-compatibility-semantics" title></emu-xref>, then
+                1. If ! _env_.HasBinding(_dn_) is *false*, then
+                  1. Perform ! _env_.CreateMutableBinding(_dn_, *false*).
+              1. Else,
+                1. Perform ! _env_.CreateMutableBinding(_dn_, *false*).
           1. If _d_ is either a |FunctionDeclaration|, a |GeneratorDeclaration|, an |AsyncFunctionDeclaration|, or an |AsyncGeneratorDeclaration|, then
             1. Let _fn_ be the sole element of the BoundNames of _d_.
             1. Let _fo_ be InstantiateFunctionObject of _d_ with arguments _env_ and _privateEnv_.
-            1. [id="step-blockdeclarationinstantiation-initializebinding"] Perform ! _env_.InitializeBinding(_fn_, _fo_). NOTE: This step is replaced in section <emu-xref href="#sec-web-compat-blockdeclarationinstantiation"></emu-xref>.
+            1. [id="step-blockdeclarationinstantiation-initializebinding", normative-optional] If the host is a web browser or otherwise supports <emu-xref href="#sec-block-level-function-declarations-web-legacy-compatibility-semantics" title></emu-xref>, then
+              1. If the binding for _fn_ in _env_ is an uninitialized binding, then
+                1. Perform ! _env_.InitializeBinding(_fn_, _fo_).
+              1. Else,
+                1. Assert: _d_ is a |FunctionDeclaration|.
+                1. Perform ! _env_.SetMutableBinding(_fn_, _fo_, *false*).
+            1. Else,
+              1. Perform ! _env_.InitializeBinding(_fn_, _fo_).
         1. Return ~unused~.
       </emu-alg>
     </emu-clause>
@@ -22556,20 +22402,20 @@
                 1. Let _status_ be Completion(InitializeReferencedBinding(_lhsRef_, _nextValue_)).
             1. If _status_ is an abrupt completion, then
               1. Set the running execution context's LexicalEnvironment to _oldEnv_.
-              1. If _iteratorKind_ is ~async~, return ? AsyncIteratorClose(_iteratorRecord_, _status_).
               1. If _iterationKind_ is ~enumerate~, then
                 1. Return ? _status_.
               1. Else,
                 1. Assert: _iterationKind_ is ~iterate~.
+                1. If _iteratorKind_ is ~async~, return ? AsyncIteratorClose(_iteratorRecord_, _status_).
                 1. Return ? IteratorClose(_iteratorRecord_, _status_).
             1. Let _result_ be Completion(Evaluation of _stmt_).
             1. Set the running execution context's LexicalEnvironment to _oldEnv_.
             1. If LoopContinues(_result_, _labelSet_) is *false*, then
+              1. Set _status_ to Completion(UpdateEmpty(_result_, _V_)).
               1. If _iterationKind_ is ~enumerate~, then
-                1. Return ? UpdateEmpty(_result_, _V_).
+                1. Return ? _status_.
               1. Else,
                 1. Assert: _iterationKind_ is ~iterate~.
-                1. Set _status_ to Completion(UpdateEmpty(_result_, _V_)).
                 1. If _iteratorKind_ is ~async~, return ? AsyncIteratorClose(_iteratorRecord_, _status_).
                 1. Return ? IteratorClose(_iteratorRecord_, _status_).
             1. If _result_.[[Value]] is not ~empty~, set _V_ to _result_.[[Value]].
@@ -22942,12 +22788,16 @@
         `default` `:` StatementList[?Yield, ?Await, ?Return]?
     </emu-grammar>
 
-    <emu-clause id="sec-switch-statement-static-semantics-early-errors">
+    <emu-clause id="sec-switch-statement-static-semantics-early-errors" oldids="sec-switch-duplicates-allowed-static-semantics">
       <h1>Static Semantics: Early Errors</h1>
       <emu-grammar>SwitchStatement : `switch` `(` Expression `)` CaseBlock</emu-grammar>
       <ul>
         <li>
-          It is a Syntax Error if the LexicallyDeclaredNames of |CaseBlock| contains any duplicate entries.
+          <p>It is a Syntax Error if the LexicallyDeclaredNames of |CaseBlock| contains any duplicate entries<span normative-optional>, unless the host is a web browser or otherwise supports <emu-xref href="#sec-block-level-function-declarations-web-legacy-compatibility-semantics" title></emu-xref>, and both of the following conditions are true:</span></p>
+          <ul normative-optional>
+            <li>IsStrict(this production) is *false*.</li>
+            <li>The duplicate entries are only bound by FunctionDeclarations.</li>
+          </ul>
         </li>
         <li>
           It is a Syntax Error if any element of the LexicallyDeclaredNames of |CaseBlock| also occurs in the VarDeclaredNames of |CaseBlock|.
@@ -23100,12 +22950,9 @@
       <emu-grammar>LabelledItem : FunctionDeclaration</emu-grammar>
       <ul>
         <li>
-          It is a Syntax Error if any source text is matched by this production.
+          It is a Syntax Error if any source text is matched by this production<span normative-optional>, unless that source text is non-strict code and the host is a web browser or otherwise supports <emu-xref href="#sec-labelled-function-declarations" title></emu-xref></span>.
         </li>
       </ul>
-      <emu-note>
-        <p>An alternative definition for this rule is provided in <emu-xref href="#sec-labelled-function-declarations"></emu-xref>.</p>
-      </emu-note>
     </emu-clause>
 
     <emu-clause id="sec-islabelledfunction" type="abstract operation">
@@ -23253,12 +23100,9 @@
           It is a Syntax Error if any element of the BoundNames of |CatchParameter| also occurs in the LexicallyDeclaredNames of |Block|.
         </li>
         <li>
-          It is a Syntax Error if any element of the BoundNames of |CatchParameter| also occurs in the VarDeclaredNames of |Block|.
+          It is a Syntax Error if any element of the BoundNames of |CatchParameter| also occurs in the VarDeclaredNames of |Block|<span normative-optional>, unless |CatchParameter| is <emu-grammar>CatchParameter : BindingIdentifier</emu-grammar> and the host is a web browser or otherwise supports <emu-xref href="#sec-variablestatements-in-catch-blocks" title></emu-xref></span>.
         </li>
       </ul>
-      <emu-note>
-        <p>An alternative static semantics for this production is given in <emu-xref href="#sec-variablestatements-in-catch-blocks"></emu-xref>.</p>
-      </emu-note>
     </emu-clause>
 
     <emu-clause id="sec-runtime-semantics-catchclauseevaluation" type="sdo">
@@ -23830,7 +23674,7 @@
         1. Return ~empty~.
       </emu-alg>
       <emu-note>
-        <p>An alternative semantics is provided in <emu-xref href="#sec-block-level-function-declarations-web-legacy-compatibility-semantics"></emu-xref>.</p>
+        <p>An alternative semantics is provided by <emu-xref href="#sec-block-level-function-declarations-web-legacy-compatibility-semantics" title></emu-xref> at step <emu-xref href="#step-functiondeclarationinstantiation-alt-funcdecl-eval"></emu-xref> of FunctionDeclarationInstantiation, step <emu-xref href="#step-globaldeclarationinstantiation-alt-funcdecl-eval"></emu-xref> of GlobalDeclarationInstantiation, and step <emu-xref href="#step-evaldeclarationinstantiation-alt-funcdecl-eval"></emu-xref> of EvalDeclarationInstantiation.</p>
       </emu-note>
       <emu-grammar>FunctionDeclaration : `function` `(` FormalParameters `)` `{` FunctionBody `}`</emu-grammar>
       <emu-alg>
@@ -24432,17 +24276,17 @@
             1. Assert: _received_ is a return completion.
             1. Let _return_ be ? GetMethod(_iterator_, *"return"*).
             1. If _return_ is *undefined*, then
-              1. Set _value_ to _received_.[[Value]].
+              1. Let _receivedValue_ be _received_.[[Value]].
               1. If _generatorKind_ is ~async~, then
-                1. Set _value_ to ? Await(_value_).
-              1. Return ReturnCompletion(_value_).
+                1. Set _receivedValue_ to ? Await(_receivedValue_).
+              1. Return ReturnCompletion(_receivedValue_).
             1. Let _innerReturnResult_ be ? Call(_return_, _iterator_, « _received_.[[Value]] »).
             1. If _generatorKind_ is ~async~, set _innerReturnResult_ to ? Await(_innerReturnResult_).
             1. If _innerReturnResult_ is not an Object, throw a *TypeError* exception.
             1. Let _done_ be ? IteratorComplete(_innerReturnResult_).
             1. If _done_ is *true*, then
-              1. Set _value_ to ? IteratorValue(_innerReturnResult_).
-              1. Return ReturnCompletion(_value_).
+              1. Let _returnedValue_ be ? IteratorValue(_innerReturnResult_).
+              1. Return ReturnCompletion(_returnedValue_).
             1. If _generatorKind_ is ~async~, set _received_ to Completion(AsyncGeneratorYield(? IteratorValue(_innerReturnResult_))).
             1. Else, set _received_ to Completion(GeneratorYield(_innerReturnResult_)).
       </emu-alg>
@@ -25190,6 +25034,7 @@
         Runtime Semantics: ClassDefinitionEvaluation (
           _classBinding_: a String or *undefined*,
           _className_: a property key or a Private Name,
+          _sourceText_: ECMAScript source text,
         ): either a normal completion containing a function object or an abrupt completion
       </h1>
       <dl class="header">
@@ -25252,12 +25097,13 @@
               1. Let _result_ be ? OrdinaryCreateFromConstructor(NewTarget, *"%Object.prototype%"*).
             1. Perform ? InitializeInstanceElements(_result_, _F_).
             1. Return NormalCompletion(_result_).
-          1. Let _F_ be CreateBuiltinFunction(_defaultConstructor_, 0, _className_, « [[ConstructorKind]], [[SourceText]] », the current Realm Record, _constructorParent_).
+          1. Let _F_ be CreateBuiltinFunction(_defaultConstructor_, 0, _className_, « [[ConstructorKind]], [[SourceText]], [[PrivateMethods]], [[Fields]] », the current Realm Record, _constructorParent_).
         1. Else,
           1. Let _constructorInfo_ be ! DefineMethod of _constructor_ with arguments _proto_ and _constructorParent_.
           1. Let _F_ be _constructorInfo_.[[Closure]].
           1. Perform MakeClassConstructor(_F_).
           1. Perform SetFunctionName(_F_, _className_).
+        1. Set _F_.[[SourceText]] to _sourceText_.
         1. Perform MakeConstructor(_F_, *false*, _proto_).
         1. If |ClassHeritage| is present, set _F_.[[ConstructorKind]] to ~derived~.
         1. Perform ! DefineMethodProperty(_proto_, *"constructor"*, _F_, *false*).
@@ -25323,17 +25169,16 @@
       <emu-grammar>ClassDeclaration : `class` BindingIdentifier ClassTail</emu-grammar>
       <emu-alg>
         1. Let _className_ be the StringValue of |BindingIdentifier|.
-        1. Let _value_ be ? ClassDefinitionEvaluation of |ClassTail| with arguments _className_ and _className_.
-        1. Set _value_.[[SourceText]] to the source text matched by |ClassDeclaration|.
+        1. Let _sourceText_ be the source text matched by |ClassDeclaration|.
+        1. Let _value_ be ? ClassDefinitionEvaluation of |ClassTail| with arguments _className_, _className_, and _sourceText_.
         1. Let _env_ be the running execution context's LexicalEnvironment.
         1. Perform ? InitializeBoundName(_className_, _value_, _env_).
         1. Return _value_.
       </emu-alg>
       <emu-grammar>ClassDeclaration : `class` ClassTail</emu-grammar>
       <emu-alg>
-        1. Let _value_ be ? ClassDefinitionEvaluation of |ClassTail| with arguments *undefined* and *"default"*.
-        1. Set _value_.[[SourceText]] to the source text matched by |ClassDeclaration|.
-        1. Return _value_.
+        1. Let _sourceText_ be the source text matched by |ClassDeclaration|.
+        1. Return ? ClassDefinitionEvaluation of |ClassTail| with arguments *undefined*, *"default"*, and _sourceText_.
       </emu-alg>
       <emu-note>
         <p><emu-grammar>ClassDeclaration : `class` ClassTail</emu-grammar> only occurs as part of an |ExportDeclaration| and establishing its binding is handled as part of the evaluation action for that production. See <emu-xref href="#sec-exports-runtime-semantics-evaluation"></emu-xref>.</p>
@@ -25352,16 +25197,14 @@
       </emu-note>
       <emu-grammar>ClassExpression : `class` ClassTail</emu-grammar>
       <emu-alg>
-        1. Let _value_ be ? ClassDefinitionEvaluation of |ClassTail| with arguments *undefined* and *""*.
-        1. Set _value_.[[SourceText]] to the source text matched by |ClassExpression|.
-        1. Return _value_.
+        1. Let _sourceText_ be the source text matched by |ClassExpression|.
+        1. Return ? ClassDefinitionEvaluation of |ClassTail| with arguments *undefined*, *""*, and _sourceText_.
       </emu-alg>
       <emu-grammar>ClassExpression : `class` BindingIdentifier ClassTail</emu-grammar>
       <emu-alg>
         1. Let _className_ be the StringValue of |BindingIdentifier|.
-        1. Let _value_ be ? ClassDefinitionEvaluation of |ClassTail| with arguments _className_ and _className_.
-        1. Set _value_.[[SourceText]] to the source text matched by |ClassExpression|.
-        1. Return _value_.
+        1. Let _sourceText_ be the source text matched by |ClassExpression|.
+        1. Return ? ClassDefinitionEvaluation of |ClassTail| with arguments _className_, _className_, and _sourceText_.
       </emu-alg>
       <emu-grammar>ClassElementName : PrivateIdentifier</emu-grammar>
       <emu-alg>
@@ -26269,7 +26112,7 @@
       </emu-alg>
     </emu-clause>
 
-    <emu-clause id="sec-globaldeclarationinstantiation" type="abstract operation">
+    <emu-clause id="sec-globaldeclarationinstantiation" type="abstract operation" oldids="sec-web-compat-globaldeclarationinstantiation">
       <h1>
         GlobalDeclarationInstantiation (
           _script_: a |Script| Parse Node,
@@ -26284,11 +26127,6 @@
         <p>When an execution context is established for evaluating scripts, declarations are instantiated in the current global environment. Each global binding declared in the code is instantiated.</p>
       </emu-note>
       <p>It performs the following steps when called:</p>
-      <!--
-        WARNING: If you add, remove, rename, or repurpose any variable names
-                 within this algorithm, you may need to update
-                 #sec-web-compat-globaldeclarationinstantiation accordingly.
-      -->
       <emu-alg>
         1. Let _lexNames_ be the LexicallyDeclaredNames of _script_.
         1. Let _varNames_ be the VarDeclaredNames of _script_.
@@ -26322,7 +26160,26 @@
                 1. If _declaredVarNames_ does not contain _vn_, then
                   1. Append _vn_ to _declaredVarNames_.
         1. NOTE: No abnormal terminations occur after this algorithm step if the global object is an ordinary object. However, if the global object is a Proxy exotic object it may exhibit behaviours that cause abnormal terminations in some of the following steps.
-        1. [id="step-globaldeclarationinstantiation-web-compat-insertion-point"] NOTE: Annex <emu-xref href="#sec-web-compat-globaldeclarationinstantiation"></emu-xref> adds additional steps at this point.
+        1. [id="step-globaldeclarationinstantiation-web-compat-insertion-point", normative-optional] If the host is a web browser or otherwise supports <emu-xref href="#sec-block-level-function-declarations-web-legacy-compatibility-semantics" title></emu-xref>, then
+          1. Let _strict_ be ScriptIsStrict of _script_.
+          1. If _strict_ is *false*, then
+            1. Let _declaredFunctionOrVarNames_ be the list-concatenation of _declaredFunctionNames_ and _declaredVarNames_.
+            1. For each |FunctionDeclaration| _f_ that is directly contained in the |StatementList| of any |Block|, |CaseClause|, or |DefaultClause| _x_ such that _script_ Contains _x_ is *true*, do
+              1. Let _F_ be the StringValue of the |BindingIdentifier| of _f_.
+              1. If replacing the |FunctionDeclaration| _f_ with a |VariableStatement| that has _F_ as a |BindingIdentifier| would not produce any Early Errors for _script_, then
+                1. If HasLexicalDeclaration(_env_, _F_) is *false*, then
+                  1. Let _fnDefinable_ be ? CanDeclareGlobalVar(_env_, _F_).
+                  1. If _fnDefinable_ is *true*, then
+                    1. NOTE: A var binding for _F_ is only instantiated here if it is neither a VarDeclaredName nor the name of another |FunctionDeclaration|.
+                    1. If _declaredFunctionOrVarNames_ does not contain _F_, then
+                      1. Perform ? CreateGlobalVarBinding(_env_, _F_, *false*).
+                      1. Append _F_ to _declaredFunctionOrVarNames_.
+                    1. [id="step-globaldeclarationinstantiation-alt-funcdecl-eval"] When the |FunctionDeclaration| _f_ is evaluated, perform the following steps in place of the |FunctionDeclaration| Evaluation algorithm provided in <emu-xref href="#sec-function-definitions-runtime-semantics-evaluation"></emu-xref>:
+                      1. Let _gEnv_ be the running execution context's VariableEnvironment.
+                      1. Let _bEnv_ be the running execution context's LexicalEnvironment.
+                      1. Let _fObj_ be ! _bEnv_.GetBindingValue(_F_, *false*).
+                      1. Perform ? <emu-meta effects="user-code">_gEnv_.SetMutableBinding</emu-meta>(_F_, _fObj_, *false*).
+                      1. Return ~unused~.
         1. Let _lexDeclarations_ be the LexicallyScopedDeclarations of _script_.
         1. Let _privateEnv_ be *null*.
         1. For each element _d_ of _lexDeclarations_, do
@@ -27269,8 +27126,8 @@
                 1. Assert: _module_.[[Status]] is either ~evaluating-async~ or ~evaluated~.
                 1. Assert: _module_.[[EvaluationError]] is ~empty~.
                 1. If _module_.[[Status]] is ~evaluated~, then
-                  1. NOTE: This implies that evaluation of _module_ completed synchronously.
-                  1. Assert: _module_.[[AsyncEvaluationOrder]] is ~unset~.
+                  1. Assert: _module_.[[AsyncEvaluationOrder]] is either ~unset~ or ~done~.
+                  1. NOTE: _module_.[[AsyncEvaluationOrder]] is ~done~ if and only if _module_ had already been evaluated and that evaluation was asynchronous.
                   1. Perform ! Call(_capability_.[[Resolve]], *undefined*, « *undefined* »).
                 1. Assert: _stack_ is empty.
               1. Return _capability_.[[Promise]].
@@ -27487,7 +27344,7 @@
             <img alt="A module graph in which module A depends on module B, and module B depends on module C" width="60" height="198" src="img/module-graph-simple.svg">
           </emu-figure>
 
-          <p>Let's first assume that there are no error conditions. When a host first calls _A_.LoadRequestedModules(), this will complete successfully by assumption, and recursively load the dependencies of _B_ and _C_ as well (respectively, _C_ and none), and then set _A_.[[Status]] = _B_.[[Status]] = _C_.[[Status]] = ~unlinked~. Then, when the host calls _A_.Link(), it will complete successfully (again by assumption) such that _A_.[[Status]] = _B_.[[Status]] = _C_.[[Status]] = linked. These preparatory steps can be performed at any time. Later, when the host is ready to incur any possible side effects of the modules, it can call _A_.Evaluate(), which will complete successfully, returning a Promise resolving to *undefined* (again by assumption), recursively having evaluated first _C_ and then _B_. Each module's [[Status]] at this point will be ~evaluated~.</p>
+          <p>Let's first assume that there are no error conditions. When a host first calls _A_.LoadRequestedModules(), this will complete successfully by assumption, and recursively load the dependencies of _B_ and _C_ as well (respectively, _C_ and none), and then set _A_.[[Status]] = _B_.[[Status]] = _C_.[[Status]] = ~unlinked~. Then, when the host calls _A_.Link(), it will complete successfully (again by assumption) such that _A_.[[Status]] = _B_.[[Status]] = _C_.[[Status]] = ~linked~. These preparatory steps can be performed at any time. Later, when the host is ready to incur any possible side effects of the modules, it can call _A_.Evaluate(), which will complete successfully, returning a Promise resolving to *undefined* (again by assumption), recursively having evaluated first _C_ and then _B_. Each module's [[Status]] at this point will be ~evaluated~.</p>
 
           <p>Consider then cases involving linking errors, after a successful call to _A_.LoadRequestedModules(). If InnerModuleLinking of _C_ succeeds but, thereafter, fails for _B_, for example because it imports something that _C_ does not provide, then the original _A_.Link() will fail, and both _A_ and _B_'s [[Status]] remain ~unlinked~. _C_'s [[Status]] has become ~linked~, though.</p>
 
@@ -29918,7 +29775,7 @@
         <p>The default implementation of HostEnsureCanCompileStrings is to return NormalCompletion(~unused~).</p>
       </emu-clause>
 
-      <emu-clause id="sec-evaldeclarationinstantiation" type="abstract operation">
+      <emu-clause id="sec-evaldeclarationinstantiation" type="abstract operation" oldids="sec-web-compat-evaldeclarationinstantiation">
         <h1>
           EvalDeclarationInstantiation (
             _body_: a |ScriptBody| Parse Node,
@@ -29930,12 +29787,6 @@
         </h1>
         <dl class="header">
         </dl>
-        <!--
-          WARNING: If you add, remove, rename, or repurpose any variable names
-                   within this algorithm, you may need to update
-                   #sec-web-compat-evaldeclarationinstantiation and
-                   #sec-variablestatements-in-catch-blocks accordingly.
-        -->
         <emu-alg>
           1. Let _varNames_ be the VarDeclaredNames of _body_.
           1. Let _varDeclarations_ be the VarScopedDeclarations of _body_.
@@ -29951,8 +29802,10 @@
                 1. NOTE: The environment of with statements cannot contain any lexical declaration so it doesn't need to be checked for var/let hoisting conflicts.
                 1. For each element _name_ of _varNames_, do
                   1. If ! _thisEnv_.HasBinding(_name_) is *true*, then
-                    1. [id="step-evaldeclarationinstantiation-throw-duplicate-binding"] Throw a *SyntaxError* exception.
-                    1. NOTE: Annex <emu-xref href="#sec-variablestatements-in-catch-blocks"></emu-xref> defines alternate semantics for the above step.
+                    1. [id="step-evaldeclarationinstantiation-throw-duplicate-binding", normative-optional] If the host is a web browser or otherwise supports <emu-xref href="#sec-variablestatements-in-catch-blocks" title></emu-xref>, then
+                      1. If _thisEnv_ is not the Environment Record for a |Catch| clause, throw a *SyntaxError* exception.
+                    1. Else,
+                      1. Throw a *SyntaxError* exception.
                   1. NOTE: A direct eval will not hoist var declaration over a like-named lexical declaration.
               1. Set _thisEnv_ to _thisEnv_.[[OuterEnv]].
           1. Let _privateIdentifiers_ be a new empty List.
@@ -29985,7 +29838,45 @@
                     1. If _vnDefinable_ is *false*, throw a *TypeError* exception.
                   1. If _declaredVarNames_ does not contain _vn_, then
                     1. Append _vn_ to _declaredVarNames_.
-          1. [id="step-evaldeclarationinstantiation-web-compat-insertion-point"] NOTE: Annex <emu-xref href="#sec-web-compat-evaldeclarationinstantiation"></emu-xref> adds additional steps at this point.
+          1. [id="step-evaldeclarationinstantiation-web-compat-insertion-point", normative-optional] If _strict_ is *false* and the host is a web browser or otherwise supports <emu-xref href="#sec-block-level-function-declarations-web-legacy-compatibility-semantics" title></emu-xref>, then
+            1. Let _declaredFunctionOrVarNames_ be the list-concatenation of _declaredFunctionNames_ and _declaredVarNames_.
+            1. For each |FunctionDeclaration| _f_ that is directly contained in the |StatementList| of any |Block|, |CaseClause|, or |DefaultClause| _x_ such that _body_ Contains _x_ is *true*, do
+              1. Let _F_ be the StringValue of the |BindingIdentifier| of _f_.
+              1. If replacing the |FunctionDeclaration| _f_ with a |VariableStatement| that has _F_ as a |BindingIdentifier| would not produce any Early Errors for _body_, then
+                1. Let _bindingExists_ be *false*.
+                1. Set _thisEnv_ to _lexEnv_.
+                1. Assert: The following loop will terminate.
+                1. Repeat, while _thisEnv_ is not _varEnv_,
+                  1. If _thisEnv_ is not an Object Environment Record, then
+                    1. If ! _thisEnv_.HasBinding(_F_) is *true*, then
+                      1. [id="step-evaldeclarationinstantiation-web-compat-bindingexists", normative-optional] If the host is a web browser or otherwise supports <emu-xref href="#sec-variablestatements-in-catch-blocks" title></emu-xref>, then
+                        1. If _thisEnv_ is not the Environment Record for a |Catch| clause, set _bindingExists_ to *true*.
+                      1. Else,
+                        1. Set _bindingExists_ to *true*.
+                  1. Set _thisEnv_ to _thisEnv_.[[OuterEnv]].
+                1. If _bindingExists_ is *false* and _varEnv_ is a Global Environment Record, then
+                  1. If HasLexicalDeclaration(_varEnv_, _F_) is *false*, then
+                    1. Let _fnDefinable_ be ? CanDeclareGlobalVar(_varEnv_, _F_).
+                  1. Else,
+                    1. Let _fnDefinable_ be *false*.
+                1. Else,
+                  1. Let _fnDefinable_ be *true*.
+                1. If _bindingExists_ is *false* and _fnDefinable_ is *true*, then
+                  1. If _declaredFunctionOrVarNames_ does not contain _F_, then
+                    1. If _varEnv_ is a Global Environment Record, then
+                      1. Perform ? CreateGlobalVarBinding(_varEnv_, _F_, *true*).
+                    1. Else,
+                      1. Set _bindingExists_ to ! _varEnv_.HasBinding(_F_).
+                      1. If _bindingExists_ is *false*, then
+                        1. Perform ! _varEnv_.CreateMutableBinding(_F_, *true*).
+                        1. Perform ! _varEnv_.InitializeBinding(_F_, *undefined*).
+                    1. Append _F_ to _declaredFunctionOrVarNames_.
+                  1. [id="step-evaldeclarationinstantiation-alt-funcdecl-eval"] When the |FunctionDeclaration| _f_ is evaluated, perform the following steps in place of the |FunctionDeclaration| Evaluation algorithm provided in <emu-xref href="#sec-function-definitions-runtime-semantics-evaluation"></emu-xref>:
+                    1. Let _gEnv_ be the running execution context's VariableEnvironment.
+                    1. Let _bEnv_ be the running execution context's LexicalEnvironment.
+                    1. Let _fObj_ be ! _bEnv_.GetBindingValue(_F_, *false*).
+                    1. Perform ? <emu-meta effects="user-code">_gEnv_.SetMutableBinding</emu-meta>(_F_, _fObj_, *false*).
+                    1. Return ~unused~.
           1. [id="step-evaldeclarationinstantiation-post-validation"] NOTE: No abnormal terminations occur after this algorithm step unless _varEnv_ is a Global Environment Record and the global object is a Proxy exotic object.
           1. Let _lexDeclarations_ be the LexicallyScopedDeclarations of _body_.
           1. For each element _d_ of _lexDeclarations_, do
@@ -30019,9 +29910,6 @@
                 1. Perform ! _varEnv_.InitializeBinding(_vn_, *undefined*).
           1. Return ~unused~.
         </emu-alg>
-        <emu-note>
-          <p>An alternative version of this algorithm is described in <emu-xref href="#sec-variablestatements-in-catch-blocks"></emu-xref>.</p>
-        </emu-note>
       </emu-clause>
     </emu-clause>
 
@@ -30088,7 +29976,7 @@
         1. Else,
           1. Set _R_ to 10.
         1. If _stripPrefix_ is *true*, then
-          1. If the length of _S_ is at least 2 and the first two code units of _S_ are either *"0x"* or *"0X"*, then
+          1. If the length of _S_ ≥ 2 and the first two code units of _S_ are either *"0x"* or *"0X"*, then
             1. Set _S_ to the substring of _S_ from index 2.
             1. Set _R_ to 16.
         1. If _S_ contains a code unit that is not a radix-_R_ digit, let _end_ be the index within _S_ of the first such code unit; otherwise let _end_ be the length of _S_.
@@ -30854,7 +30742,7 @@
         <h1>Object.setPrototypeOf ( _O_, _proto_ )</h1>
         <p>This function performs the following steps when called:</p>
         <emu-alg>
-          1. Set _O_ to ? RequireObjectCoercible(_O_).
+          1. Perform ? RequireObjectCoercible(_O_).
           1. If _proto_ is not an Object and _proto_ is not *null*, throw a *TypeError* exception.
           1. If _O_ is not an Object, return _O_.
           1. Let _status_ be ? <emu-meta effects="user-code">_O_.[[SetPrototypeOf]]</emu-meta>(_proto_).
@@ -31004,7 +30892,8 @@
           <h1>set Object.prototype.__proto__</h1>
           <p>The value of the [[Set]] attribute is a built-in function that takes an argument _proto_. It performs the following steps when called:</p>
           <emu-alg>
-            1. Let _O_ be ? RequireObjectCoercible(*this* value).
+            1. Let _O_ be the *this* value.
+            1. Perform ? RequireObjectCoercible(_O_).
             1. If _proto_ is not an Object and _proto_ is not *null*, return *undefined*.
             1. If _O_ is not an Object, return *undefined*.
             1. Let _status_ be ? <emu-meta effects="user-code">_O_.[[SetPrototypeOf]]</emu-meta>(_proto_).
@@ -31375,7 +31264,7 @@
       <emu-clause id="sec-function-instances-name">
         <h1>name</h1>
         <p>The value of the *"name"* property is a String that is descriptive of the function. The name has no semantic significance but is typically a variable or property name that is used to refer to the function at its point of definition in ECMAScript source text. This property has the attributes { [[Writable]]: *false*, [[Enumerable]]: *false*, [[Configurable]]: *true* }.</p>
-        <p>Anonymous functions objects that do not have a contextual name associated with them by this specification use the empty String as the value of the *"name"* property.</p>
+        <p>Anonymous function objects that do not have a contextual name associated with them by this specification use the empty String as the value of the *"name"* property.</p>
       </emu-clause>
 
       <emu-clause id="sec-function-instances-prototype">
@@ -31730,7 +31619,7 @@
           <dl class="header">
           </dl>
           <emu-alg>
-            1. Let _desc_ be _sym_'s [[Description]] value.
+            1. Let _desc_ be _sym_.[[Description]].
             1. If _desc_ is *undefined*, set _desc_ to the empty String.
             1. Assert: _desc_ is a String.
             1. Return the string-concatenation of *"Symbol("*, _desc_, and *")"*.
@@ -32357,7 +32246,7 @@
         <emu-note>
           <p>For implementations that provide more accurate conversions than required by the rules above, it is recommended that the following alternative version of step <emu-xref href="#step-number-proto-toexponential-intermediate-values"></emu-xref> be used as a guideline:</p>
           <emu-alg replaces-step="step-number-proto-toexponential-intermediate-values">
-            1. Let _e_, _n_, and _f_ be integers such that _f_ ≥ 0, 10<sup>_f_</sup> ≤ _n_ &lt; 10<sup>_f_ + 1</sup>, 𝔽(_n_ × 10<sup>_e_ - _f_</sup>) is 𝔽(_x_), and _f_ is as small as possible. If there are multiple possibilities for _n_, choose the value of _n_ for which 𝔽(_n_ × 10<sup>_e_ - _f_</sup>) is closest in value to 𝔽(_x_). If there are two such possible values of _n_, choose the one that is even.
+            1. Let _e_, _n_, and _ff_ be integers such that _ff_ ≥ 0, 10<sup>_ff_</sup> ≤ _n_ &lt; 10<sup>_ff_ + 1</sup>, 𝔽(_n_ × 10<sup>_e_ - _ff_</sup>) is 𝔽(_x_), and _ff_ is as small as possible. If there are multiple possibilities for _n_, choose the value of _n_ for which 𝔽(_n_ × 10<sup>_e_ - _ff_</sup>) is closest in value to 𝔽(_x_). If there are two such possible values of _n_, choose the one that is even.
           </emu-alg>
         </emu-note>
       </emu-clause>
@@ -33234,6 +33123,52 @@
           1. If _n_ &lt; *-0*<sub>𝔽</sub>, return *NaN*.
           1. Return 𝔽(the square root of ℝ(_n_)).
         </emu-alg>
+      </emu-clause>
+
+      <emu-clause id="sec-math.sumprecise">
+        <h1>Math.sumPrecise ( _items_ )</h1>
+        <p>Given an iterable of Numbers, this function sums each value in the iterable and returns their sum. If any value is not a Number it throws a *TypeError* exception.</p>
+        <p>It performs the following steps when called:</p>
+        <emu-alg>
+          1. Perform ? RequireObjectCoercible(_items_).
+          1. Let _iteratorRecord_ be ? GetIterator(_items_, ~sync~).
+          1. Let _state_ be ~minus-zero~.
+          1. Let _sum_ be 0.
+          1. Let _count_ be 0.
+          1. Let _next_ be ~not-started~.
+          1. Repeat, while _next_ is not ~done~,
+            1. Set _next_ to ? IteratorStepValue(_iteratorRecord_).
+            1. If _next_ is not ~done~, then
+              1. If _count_ ≥ 2<sup>53</sup> - 1, then
+                1. NOTE: This step is not expected to be reached in practice and is included only so that implementations may rely on inputs being "reasonably sized" without violating this specification.
+                1. Let _error_ be ThrowCompletion(a newly created *RangeError* object).
+                1. Return ? IteratorClose(_iteratorRecord_, _error_).
+              1. If _next_ is not a Number, then
+                1. Let _error_ be ThrowCompletion(a newly created *TypeError* object).
+                1. Return ? IteratorClose(_iteratorRecord_, _error_).
+              1. Let _n_ be _next_.
+              1. If _state_ is not ~not-a-number~, then
+                1. If _n_ is *NaN*, then
+                  1. Set _state_ to ~not-a-number~.
+                1. Else if _n_ is *+∞*<sub>𝔽</sub>, then
+                  1. If _state_ is ~minus-infinity~, set _state_ to ~not-a-number~.
+                  1. Else, set _state_ to ~plus-infinity~.
+                1. Else if _n_ is *-∞*<sub>𝔽</sub>, then
+                  1. If _state_ is ~plus-infinity~, set _state_ to ~not-a-number~.
+                  1. Else, set _state_ to ~minus-infinity~.
+                1. Else if _n_ is not *-0*<sub>𝔽</sub> and _state_ is either ~minus-zero~ or ~finite~, then
+                  1. Set _state_ to ~finite~.
+                  1. Set _sum_ to _sum_ + ℝ(_n_).
+              1. Set _count_ to _count_ + 1.
+          1. If _state_ is ~not-a-number~, return *NaN*.
+          1. If _state_ is ~plus-infinity~, return *+∞*<sub>𝔽</sub>.
+          1. If _state_ is ~minus-infinity~, return *-∞*<sub>𝔽</sub>.
+          1. If _state_ is ~minus-zero~, return *-0*<sub>𝔽</sub>.
+          1. Return 𝔽(_sum_).
+        </emu-alg>
+        <emu-note>
+          <p>The value of _sum_ can be computed without arbitrary-precision arithmetic by a variety of algorithms. One such is the "Grow-Expansion" algorithm given in <i>Adaptive Precision Floating-Point Arithmetic and Fast Robust Geometric Predicates</i> by Jonathan Richard Shewchuk. A more recent algorithm is given in "<a href="https://arxiv.org/abs/1505.05571">Fast exact summation using small and large superaccumulators</a>", code for which is available at <a href="https://gitlab.com/radfordneal/xsum">https://gitlab.com/radfordneal/xsum</a>.</p>
+        </emu-note>
       </emu-clause>
 
       <emu-clause id="sec-math.tan">
@@ -35435,7 +35370,8 @@ THH:mm:ss.sss
       <emu-clause id="sec-string.prototype.at">
         <h1>String.prototype.at ( _index_ )</h1>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. Let _S_ be ? ToString(_O_).
           1. Let _len_ be the length of _S_.
           1. Let _relativeIndex_ be ? ToIntegerOrInfinity(_index_).
@@ -35456,7 +35392,8 @@ THH:mm:ss.sss
         </emu-note>
         <p>This method performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. Let _S_ be ? ToString(_O_).
           1. Let _position_ be ? ToIntegerOrInfinity(_pos_).
           1. Let _size_ be the length of _S_.
@@ -35475,7 +35412,8 @@ THH:mm:ss.sss
         </emu-note>
         <p>This method performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. Let _S_ be ? ToString(_O_).
           1. Let _position_ be ? ToIntegerOrInfinity(_pos_).
           1. Let _size_ be the length of _S_.
@@ -35494,7 +35432,8 @@ THH:mm:ss.sss
         </emu-note>
         <p>This method performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. Let _S_ be ? ToString(_O_).
           1. Let _position_ be ? ToIntegerOrInfinity(_pos_).
           1. Let _size_ be the length of _S_.
@@ -35514,7 +35453,8 @@ THH:mm:ss.sss
         </emu-note>
         <p>This method performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. Let _S_ be ? ToString(_O_).
           1. Let _R_ be _S_.
           1. For each element _next_ of _args_, do
@@ -35537,7 +35477,8 @@ THH:mm:ss.sss
         <h1>String.prototype.endsWith ( _searchString_ [ , _endPosition_ ] )</h1>
         <p>This method performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. Let _S_ be ? ToString(_O_).
           1. Let _isRegExp_ be ? IsRegExp(_searchString_).
           1. If _isRegExp_ is *true*, throw a *TypeError* exception.
@@ -35568,7 +35509,8 @@ THH:mm:ss.sss
         <h1>String.prototype.includes ( _searchString_ [ , _position_ ] )</h1>
         <p>This method performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. Let _S_ be ? ToString(_O_).
           1. Let _isRegExp_ be ? IsRegExp(_searchString_).
           1. If _isRegExp_ is *true*, throw a *TypeError* exception.
@@ -35599,7 +35541,8 @@ THH:mm:ss.sss
         </emu-note>
         <p>This method performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. Let _S_ be ? ToString(_O_).
           1. Let _searchStr_ be ? ToString(_searchString_).
           1. Let _pos_ be ? ToIntegerOrInfinity(_position_).
@@ -35619,7 +35562,8 @@ THH:mm:ss.sss
         <h1>String.prototype.isWellFormed ( )</h1>
         <p>This method performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. Let _S_ be ? ToString(_O_).
           1. Return IsStringWellFormedUnicode(_S_).
         </emu-alg>
@@ -35632,7 +35576,8 @@ THH:mm:ss.sss
         </emu-note>
         <p>This method performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. Let _S_ be ? ToString(_O_).
           1. Let _searchStr_ be ? ToString(_searchString_).
           1. Let _numPos_ be ? ToNumber(_position_).
@@ -35640,6 +35585,7 @@ THH:mm:ss.sss
           1. If _numPos_ is *NaN*, let _pos_ be +∞; otherwise let _pos_ be ! ToIntegerOrInfinity(_numPos_).
           1. Let _len_ be the length of _S_.
           1. Let _searchLen_ be the length of _searchStr_.
+          1. If _len_ &lt; _searchLen_, return *-1*<sub>𝔽</sub>.
           1. Let _start_ be the result of clamping _pos_ between 0 and _len_ - _searchLen_.
           1. Let _result_ be StringLastIndexOf(_S_, _searchStr_, _start_).
           1. If _result_ is ~not-found~, return *-1*<sub>𝔽</sub>.
@@ -35656,7 +35602,8 @@ THH:mm:ss.sss
         <p>This method returns a Number other than *NaN* representing the result of an implementation-defined locale-sensitive String comparison of the *this* value (converted to a String _S_) with _that_ (converted to a String _thatValue_). The result is intended to correspond with a sort order of String values according to conventions of the host environment's current locale, and will be negative when _S_ is ordered before _thatValue_, positive when _S_ is ordered after _thatValue_, and zero in all other cases (representing no relative ordering between _S_ and _thatValue_).</p>
         <p>Before performing the comparisons, this method performs the following steps to prepare the Strings:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. Let _S_ be ? ToString(_O_).
           1. Let _thatValue_ be ? ToString(_that_).
         </emu-alg>
@@ -35700,7 +35647,8 @@ THH:mm:ss.sss
         <h1>String.prototype.match ( _regexp_ )</h1>
         <p>This method performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. If _regexp_ is neither *undefined* nor *null*, then
             1. Let _matcher_ be ? GetMethod(_regexp_, %Symbol.match%).
             1. If _matcher_ is not *undefined*, then
@@ -35720,7 +35668,8 @@ THH:mm:ss.sss
         <p>It performs the following steps when called:</p>
 
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. If _regexp_ is neither *undefined* nor *null*, then
             1. Let _isRegExp_ be ? IsRegExp(_regexp_).
             1. If _isRegExp_ is *true*, then
@@ -35742,7 +35691,8 @@ THH:mm:ss.sss
         <h1>String.prototype.normalize ( [ _form_ ] )</h1>
         <p>This method performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. Let _S_ be ? ToString(_O_).
           1. If _form_ is *undefined*, let _f_ be *"NFC"*.
           1. Else, let _f_ be ? ToString(_form_).
@@ -35759,7 +35709,8 @@ THH:mm:ss.sss
         <h1>String.prototype.padEnd ( _maxLength_ [ , _fillString_ ] )</h1>
         <p>This method performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. Return ? StringPaddingBuiltinsImpl(_O_, _maxLength_, _fillString_, ~end~).
         </emu-alg>
       </emu-clause>
@@ -35768,7 +35719,8 @@ THH:mm:ss.sss
         <h1>String.prototype.padStart ( _maxLength_ [ , _fillString_ ] )</h1>
         <p>This method performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. Return ? StringPaddingBuiltinsImpl(_O_, _maxLength_, _fillString_, ~start~).
         </emu-alg>
 
@@ -35842,7 +35794,8 @@ THH:mm:ss.sss
         <h1>String.prototype.repeat ( _count_ )</h1>
         <p>This method performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. Let _S_ be ? ToString(_O_).
           1. Let _n_ be ? ToIntegerOrInfinity(_count_).
           1. If _n_ &lt; 0 or _n_ = +∞, throw a *RangeError* exception.
@@ -35861,7 +35814,8 @@ THH:mm:ss.sss
         <h1>String.prototype.replace ( _searchValue_, _replaceValue_ )</h1>
         <p>This method performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. If _searchValue_ is neither *undefined* nor *null*, then
             1. Let _replacer_ be ? GetMethod(_searchValue_, %Symbol.replace%).
             1. If _replacer_ is not *undefined*, then
@@ -35974,7 +35928,8 @@ THH:mm:ss.sss
         <h1>String.prototype.replaceAll ( _searchValue_, _replaceValue_ )</h1>
         <p>This method performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. If _searchValue_ is neither *undefined* nor *null*, then
             1. Let _isRegExp_ be ? IsRegExp(_searchValue_).
             1. If _isRegExp_ is *true*, then
@@ -36018,7 +35973,8 @@ THH:mm:ss.sss
         <h1>String.prototype.search ( _regexp_ )</h1>
         <p>This method performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. If _regexp_ is neither *undefined* nor *null*, then
             1. Let _searcher_ be ? GetMethod(_regexp_, %Symbol.search%).
             1. If _searcher_ is not *undefined*, then
@@ -36037,7 +35993,8 @@ THH:mm:ss.sss
         <p>This method returns a <emu-not-ref>substring</emu-not-ref> of the result of converting this object to a String, starting from index _start_ and running to, but not including, index _end_ (or through the end of the String if _end_ is *undefined*). If _start_ is negative, it is treated as <emu-eqn>_sourceLength_ + _start_</emu-eqn> where _sourceLength_ is the length of the String. If _end_ is negative, it is treated as <emu-eqn>_sourceLength_ + _end_</emu-eqn> where _sourceLength_ is the length of the String. The result is a String value, not a String object.</p>
         <p>It performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. Let _S_ be ? ToString(_O_).
           1. Let _len_ be the length of _S_.
           1. Let _intStart_ be ? ToIntegerOrInfinity(_start_).
@@ -36061,7 +36018,8 @@ THH:mm:ss.sss
         <p>This method returns an Array into which substrings of the result of converting this object to a String have been stored. The substrings are determined by searching from left to right for occurrences of _separator_; these occurrences are not part of any String in the returned array, but serve to divide up the String value. The value of _separator_ may be a String of any length or it may be an object, such as a RegExp, that has a %Symbol.split% method.</p>
         <p>It performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. If _separator_ is neither *undefined* nor *null*, then
             1. Let _splitter_ be ? GetMethod(_separator_, %Symbol.split%).
             1. If _splitter_ is not *undefined*, then
@@ -36108,7 +36066,8 @@ THH:mm:ss.sss
         <h1>String.prototype.startsWith ( _searchString_ [ , _position_ ] )</h1>
         <p>This method performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. Let _S_ be ? ToString(_O_).
           1. Let _isRegExp_ be ? IsRegExp(_searchString_).
           1. If _isRegExp_ is *true*, throw a *TypeError* exception.
@@ -36142,7 +36101,8 @@ THH:mm:ss.sss
         <p>If _start_ is strictly greater than _end_, they are swapped.</p>
         <p>It performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. Let _S_ be ? ToString(_O_).
           1. Let _len_ be the length of _S_.
           1. Let _intStart_ be ? ToIntegerOrInfinity(_start_).
@@ -36185,7 +36145,8 @@ THH:mm:ss.sss
         <p>This method interprets a String value as a sequence of UTF-16 encoded code points, as described in <emu-xref href="#sec-ecmascript-language-types-string-type"></emu-xref>.</p>
         <p>It performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. Let _S_ be ? ToString(_O_).
           1. Let _sText_ be StringToCodePoints(_S_).
           1. Let _lowerText_ be toLowercase(_sText_), according to the Unicode Default Case Conversion algorithm.
@@ -36226,7 +36187,8 @@ THH:mm:ss.sss
         <p>This method returns a String representation of this object with all leading surrogates and trailing surrogates that are not part of a surrogate pair replaced with U+FFFD (REPLACEMENT CHARACTER).</p>
         <p>It performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. Let _S_ be ? ToString(_O_).
           1. Let _strLen_ be the length of _S_.
           1. Let _k_ be 0.
@@ -36266,8 +36228,8 @@ THH:mm:ss.sss
             <dd>It interprets _string_ as a sequence of UTF-16 encoded code points, as described in <emu-xref href="#sec-ecmascript-language-types-string-type"></emu-xref>.</dd>
           </dl>
           <emu-alg>
-            1. Let _str_ be ? RequireObjectCoercible(_string_).
-            1. Let _S_ be ? ToString(_str_).
+            1. Perform ? RequireObjectCoercible(_string_).
+            1. Let _S_ be ? ToString(_string_).
             1. If _where_ is ~start~, then
               1. Let _T_ be the String value that is a copy of _S_ with leading white space removed.
             1. Else if _where_ is ~end~, then
@@ -36338,7 +36300,8 @@ THH:mm:ss.sss
         <p>This method returns an iterator object that iterates over the code points of a String value, returning each code point as a String value.</p>
         <p>It performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. Let _s_ be ? ToString(_O_).
           1. Let _closure_ be a new Abstract Closure with no parameters that captures _s_ and performs the following steps when called:
             1. Let _len_ be the length of _s_.
@@ -36785,7 +36748,7 @@ THH:mm:ss.sss
         <emu-grammar>UnicodePropertyValueExpression :: UnicodePropertyName `=` UnicodePropertyValue</emu-grammar>
         <ul>
           <li>
-            It is a Syntax Error if the source text matched by |UnicodePropertyName| is not a Unicode property name or property alias listed in the “Property name and aliases” column of <emu-xref href="#table-nonbinary-unicode-properties"></emu-xref>.
+            It is a Syntax Error if the source text matched by |UnicodePropertyName| is not a <emu-not-ref>Unicode property name</emu-not-ref> or property alias listed in the “<emu-not-ref>Property name and aliases</emu-not-ref>” column of <emu-xref href="#table-nonbinary-unicode-properties"></emu-xref>.
           </li>
           <li>
             It is a Syntax Error if the source text matched by |UnicodePropertyValue| is not a property value or property value alias for the Unicode property or property alias given by the source text matched by |UnicodePropertyName| listed in <a href="https://unicode.org/Public/UCD/latest/ucd/PropertyValueAliases.txt"><code>PropertyValueAliases.txt</code></a>.
@@ -36794,10 +36757,10 @@ THH:mm:ss.sss
         <emu-grammar>UnicodePropertyValueExpression :: LoneUnicodePropertyNameOrValue</emu-grammar>
         <ul>
           <li>
-            It is a Syntax Error if the source text matched by |LoneUnicodePropertyNameOrValue| is not a Unicode property value or property value alias for the General_Category (gc) property listed in <a href="https://unicode.org/Public/UCD/latest/ucd/PropertyValueAliases.txt"><code>PropertyValueAliases.txt</code></a>, nor a binary property or binary property alias listed in the “Property name and aliases” column of <emu-xref href="#table-binary-unicode-properties"></emu-xref>, nor a binary property of strings listed in the “Property name” column of <emu-xref href="#table-binary-unicode-properties-of-strings"></emu-xref>.
+            It is a Syntax Error if the source text matched by |LoneUnicodePropertyNameOrValue| is not a Unicode property value or property value alias for the General_Category (gc) property listed in <a href="https://unicode.org/Public/UCD/latest/ucd/PropertyValueAliases.txt"><code>PropertyValueAliases.txt</code></a>, nor a binary property or binary property alias listed in the “<emu-not-ref>Property name and aliases</emu-not-ref>” column of <emu-xref href="#table-binary-unicode-properties"></emu-xref>, nor a binary property of strings listed in the “<emu-not-ref>Property name</emu-not-ref>” column of <emu-xref href="#table-binary-unicode-properties-of-strings"></emu-xref>.
           </li>
           <li>
-            It is a Syntax Error if the enclosing |Pattern| does not have a <sub>[UnicodeSetsMode]</sub> parameter and the source text matched by |LoneUnicodePropertyNameOrValue| is a binary property of strings listed in the “Property name” column of <emu-xref href="#table-binary-unicode-properties-of-strings"></emu-xref>.
+            It is a Syntax Error if the enclosing |Pattern| does not have a <sub>[UnicodeSetsMode]</sub> parameter and the source text matched by |LoneUnicodePropertyNameOrValue| is a binary property of strings listed in the “<emu-not-ref>Property name</emu-not-ref>” column of <emu-xref href="#table-binary-unicode-properties-of-strings"></emu-xref>.
           </li>
         </ul>
         <emu-grammar>CharacterClassEscape :: `P{` UnicodePropertyValueExpression `}`</emu-grammar>
@@ -37167,7 +37130,7 @@ THH:mm:ss.sss
         </emu-alg>
         <emu-grammar>UnicodePropertyValueExpression :: LoneUnicodePropertyNameOrValue</emu-grammar>
         <emu-alg>
-          1. If the source text matched by |LoneUnicodePropertyNameOrValue| is a binary property of strings listed in the “Property name” column of <emu-xref href="#table-binary-unicode-properties-of-strings"></emu-xref>, return *true*.
+          1. If the source text matched by |LoneUnicodePropertyNameOrValue| is a binary property of strings listed in the “<emu-not-ref>Property name</emu-not-ref>” column of <emu-xref href="#table-binary-unicode-properties-of-strings"></emu-xref>, return *true*.
           1. Return *false*.
         </emu-alg>
         <emu-grammar>ClassUnion :: ClassSetRange ClassUnion?</emu-grammar>
@@ -38270,7 +38233,7 @@ THH:mm:ss.sss
         <emu-alg>
           1. Let _ps_ be the source text matched by |UnicodePropertyName|.
           1. Let _p_ be UnicodeMatchProperty(_rer_, _ps_).
-          1. Assert: _p_ is a Unicode property name or property alias listed in the “Property name and aliases” column of <emu-xref href="#table-nonbinary-unicode-properties"></emu-xref>.
+          1. Assert: _p_ is a <emu-not-ref>Unicode property name</emu-not-ref> or property alias listed in the “<emu-not-ref>Property name and aliases</emu-not-ref>” column of <emu-xref href="#table-nonbinary-unicode-properties"></emu-xref>.
           1. Let _vs_ be the source text matched by |UnicodePropertyValue|.
           1. Let _v_ be UnicodeMatchPropertyValue(_p_, _vs_).
           1. Let _A_ be the CharSet containing all Unicode code points whose character database definition includes the property _p_ with value _v_.
@@ -38282,7 +38245,7 @@ THH:mm:ss.sss
           1. If UnicodeMatchPropertyValue(`General_Category`, _s_) is a Unicode property value or property value alias for the General_Category (gc) property listed in <a href="https://unicode.org/Public/UCD/latest/ucd/PropertyValueAliases.txt"><code>PropertyValueAliases.txt</code></a>, then
             1. Return the CharSet containing all Unicode code points whose character database definition includes the property “General_Category” with value _s_.
           1. Let _p_ be UnicodeMatchProperty(_rer_, _s_).
-          1. Assert: _p_ is a binary Unicode property or binary property alias listed in the “<emu-not-ref>Property name</emu-not-ref> and aliases” column of <emu-xref href="#table-binary-unicode-properties"></emu-xref>, or a binary Unicode property of strings listed in the “<emu-not-ref>Property name</emu-not-ref>” column of <emu-xref href="#table-binary-unicode-properties-of-strings"></emu-xref>.
+          1. Assert: _p_ is a binary Unicode property or binary property alias listed in the “<emu-not-ref>Property name and aliases</emu-not-ref>” column of <emu-xref href="#table-binary-unicode-properties"></emu-xref>, or a binary Unicode property of strings listed in the “<emu-not-ref>Property name</emu-not-ref>” column of <emu-xref href="#table-binary-unicode-properties-of-strings"></emu-xref>.
           1. Let _A_ be the CharSet containing all CharSetElements whose character database definition includes the property _p_ with value “True”.
           1. Return MaybeSimpleCaseFolding(_rer_, _A_).
         </emu-alg>
@@ -38528,20 +38491,20 @@ THH:mm:ss.sss
             UnicodeMatchProperty (
               _rer_: a RegExp Record,
               _p_: ECMAScript source text,
-            ): a Unicode property name
+            ): a <emu-not-ref>Unicode property name</emu-not-ref>
           </h1>
           <dl class="header">
           </dl>
           <emu-alg>
-            1. If _rer_.[[UnicodeSets]] is *true* and _p_ is a Unicode <emu-not-ref>property name</emu-not-ref> listed in the “<emu-not-ref>Property name</emu-not-ref>” column of <emu-xref href="#table-binary-unicode-properties-of-strings"></emu-xref>, then
+            1. If _rer_.[[UnicodeSets]] is *true* and _p_ is a <emu-not-ref>Unicode property name</emu-not-ref> listed in the “<emu-not-ref>Property name</emu-not-ref>” column of <emu-xref href="#table-binary-unicode-properties-of-strings"></emu-xref>, then
               1. Return the List of Unicode code points _p_.
-            1. Assert: _p_ is a Unicode <emu-not-ref>property name</emu-not-ref> or property alias listed in the “<emu-not-ref>Property name</emu-not-ref> and aliases” column of <emu-xref href="#table-nonbinary-unicode-properties"></emu-xref> or <emu-xref href="#table-binary-unicode-properties"></emu-xref>.
-            1. Let _c_ be the canonical <emu-not-ref>property name</emu-not-ref> of _p_ as given in the “Canonical <emu-not-ref>property name</emu-not-ref>” column of the corresponding row.
+            1. Assert: _p_ is a <emu-not-ref>Unicode property name</emu-not-ref> or property alias listed in the “<emu-not-ref>Property name and aliases</emu-not-ref>” column of <emu-xref href="#table-nonbinary-unicode-properties"></emu-xref> or <emu-xref href="#table-binary-unicode-properties"></emu-xref>.
+            1. Let _c_ be the canonical <emu-not-ref>property name</emu-not-ref> of _p_ as given in the “<emu-not-ref>Canonical property name</emu-not-ref>” column of the corresponding row.
             1. Return the List of Unicode code points _c_.
           </emu-alg>
-          <p>Implementations must support the Unicode property names and aliases listed in <emu-xref href="#table-nonbinary-unicode-properties"></emu-xref>, <emu-xref href="#table-binary-unicode-properties"></emu-xref>, and <emu-xref href="#table-binary-unicode-properties-of-strings"></emu-xref>. To ensure interoperability, implementations must not support any other property names or aliases.</p>
+          <p>Implementations must support the <emu-not-ref>Unicode property names</emu-not-ref> and aliases listed in <emu-xref href="#table-nonbinary-unicode-properties"></emu-xref>, <emu-xref href="#table-binary-unicode-properties"></emu-xref>, and <emu-xref href="#table-binary-unicode-properties-of-strings"></emu-xref>. To ensure interoperability, implementations must not support any other <emu-not-ref>property names</emu-not-ref> or aliases.</p>
           <emu-note>
-            <p>For example, `Script_Extensions` (property name) and `scx` (property alias) are valid, but `script_extensions` or `Scx` aren't.</p>
+            <p>For example, `Script_Extensions` (<emu-not-ref>property name</emu-not-ref>) and `scx` (property alias) are valid, but `script_extensions` or `Scx` aren't.</p>
           </emu-note>
           <emu-note>
             <p>The listed properties form a superset of what <a href="https://unicode.org/reports/tr18/#RL1.2">UTS18 RL1.2</a> requires.</p>
@@ -38564,7 +38527,7 @@ THH:mm:ss.sss
           <dl class="header">
           </dl>
           <emu-alg>
-            1. Assert: _p_ is a canonical, unaliased Unicode property name listed in the “Canonical property name” column of <emu-xref href="#table-nonbinary-unicode-properties"></emu-xref>.
+            1. Assert: _p_ is a canonical, unaliased <emu-not-ref>Unicode property name</emu-not-ref> listed in the “<emu-not-ref>Canonical property name</emu-not-ref>” column of <emu-xref href="#table-nonbinary-unicode-properties"></emu-xref>.
             1. Assert: _v_ is a property value or property value alias for the Unicode property _p_ listed in <a href="https://unicode.org/Public/UCD/latest/ucd/PropertyValueAliases.txt"><code>PropertyValueAliases.txt</code></a>.
             1. Let _value_ be the canonical property value of _v_ as given in the “Canonical property value” column of the corresponding row.
             1. Return the List of Unicode code points _value_.
@@ -38675,7 +38638,7 @@ THH:mm:ss.sss
           1. Let _rer_ be the RegExp Record { [[IgnoreCase]]: _i_, [[Multiline]]: _m_, [[DotAll]]: _s_, [[Unicode]]: _u_, [[UnicodeSets]]: _v_, [[CapturingGroupsCount]]: _capturingGroupsCount_ }.
           1. Set _obj_.[[RegExpRecord]] to _rer_.
           1. Set _obj_.[[RegExpMatcher]] to CompilePattern of _parseResult_ with argument _rer_.
-          1. Perform ? Set(_obj_, *"lastIndex"*, *+0*<sub>𝔽</sub>, *true*).
+          1. Perform ? <emu-meta suppress-effects="user-code">Set(_obj_, *"lastIndex"*, *+0*<sub>𝔽</sub>, *true*)</emu-meta>.
           1. Return _obj_.
         </emu-alg>
       </emu-clause>
@@ -39323,7 +39286,7 @@ THH:mm:ss.sss
         </dl>
         <emu-alg>
           1. Let _length_ be the length of _S_.
-          1. Let _lastIndex_ be ℝ(? ToLength(? Get(_R_, *"lastIndex"*))).
+          1. Let _lastIndex_ be ℝ(? ToLength(! Get(_R_, *"lastIndex"*))).
           1. Let _flags_ be _R_.[[OriginalFlags]].
           1. If _flags_ contains *"g"*, let _global_ be *true*; else let _global_ be *false*.
           1. If _flags_ contains *"y"*, let _sticky_ be *true*; else let _sticky_ be *false*.
@@ -39337,13 +39300,13 @@ THH:mm:ss.sss
           1. Repeat, while _matchSucceeded_ is *false*,
             1. If _lastIndex_ > _length_, then
               1. If _global_ is *true* or _sticky_ is *true*, then
-                1. Perform ? Set(_R_, *"lastIndex"*, *+0*<sub>𝔽</sub>, *true*).
+                1. Perform ? <emu-meta suppress-effects="user-code">Set(_R_, *"lastIndex"*, *+0*<sub>𝔽</sub>, *true*)</emu-meta>.
               1. Return *null*.
             1. Let _inputIndex_ be the index into _input_ of the character that was obtained from element _lastIndex_ of _S_.
             1. Let _r_ be _matcher_(_input_, _inputIndex_).
             1. If _r_ is ~failure~, then
               1. If _sticky_ is *true*, then
-                1. Perform ? Set(_R_, *"lastIndex"*, *+0*<sub>𝔽</sub>, *true*).
+                1. Perform ? <emu-meta suppress-effects="user-code">Set(_R_, *"lastIndex"*, *+0*<sub>𝔽</sub>, *true*)</emu-meta>.
                 1. Return *null*.
               1. Set _lastIndex_ to AdvanceStringIndex(_S_, _lastIndex_, _fullUnicode_).
             1. Else,
@@ -39352,7 +39315,7 @@ THH:mm:ss.sss
           1. Let _e_ be _r_.[[EndIndex]].
           1. If _fullUnicode_ is *true*, set _e_ to GetStringIndex(_S_, _e_).
           1. If _global_ is *true* or _sticky_ is *true*, then
-            1. Perform ? Set(_R_, *"lastIndex"*, 𝔽(_e_), *true*).
+            1. Perform ? <emu-meta suppress-effects="user-code">Set(_R_, *"lastIndex"*, 𝔽(_e_), *true*)</emu-meta>.
           1. Let _n_ be the number of elements in _r_.[[Captures]].
           1. Assert: _n_ = _R_.[[RegExpRecord]].[[CapturingGroupsCount]].
           1. Assert: _n_ &lt; 2<sup>32</sup> - 1.
@@ -41769,9 +41732,10 @@ THH:mm:ss.sss
             1. Set _taRecord_ to MakeTypedArrayWithBufferWitnessRecord(_O_, ~seq-cst~).
             1. If IsTypedArrayOutOfBounds(_taRecord_) is *true*, throw a *TypeError* exception.
             1. Set _len_ to TypedArrayLength(_taRecord_).
+            1. NOTE: Side-effects of the above steps may have reduced the size of _O_, in which case copying should proceed with the longest still-applicable prefix.
+            1. Set _count_ to min(_count_, _len_ - _startIndex_, _len_ - _targetIndex_).
             1. Let _elementSize_ be TypedArrayElementSize(_O_).
             1. Let _byteOffset_ be _O_.[[ByteOffset]].
-            1. Let _bufferByteLimit_ be (_len_ × _elementSize_) + _byteOffset_.
             1. Let _toByteIndex_ be (_targetIndex_ × _elementSize_) + _byteOffset_.
             1. Let _fromByteIndex_ be (_startIndex_ × _elementSize_) + _byteOffset_.
             1. Let _countBytes_ be _count_ × _elementSize_.
@@ -41782,14 +41746,11 @@ THH:mm:ss.sss
             1. Else,
               1. Let _direction_ be 1.
             1. Repeat, while _countBytes_ > 0,
-              1. If _fromByteIndex_ &lt; _bufferByteLimit_ and _toByteIndex_ &lt; _bufferByteLimit_, then
-                1. Let _value_ be GetValueFromBuffer(_buffer_, _fromByteIndex_, ~uint8~, *true*, ~unordered~).
-                1. Perform SetValueInBuffer(_buffer_, _toByteIndex_, ~uint8~, _value_, *true*, ~unordered~).
-                1. Set _fromByteIndex_ to _fromByteIndex_ + _direction_.
-                1. Set _toByteIndex_ to _toByteIndex_ + _direction_.
-                1. Set _countBytes_ to _countBytes_ - 1.
-              1. Else,
-                1. Set _countBytes_ to 0.
+              1. Let _value_ be GetValueFromBuffer(_buffer_, _fromByteIndex_, ~uint8~, *true*, ~unordered~).
+              1. Perform SetValueInBuffer(_buffer_, _toByteIndex_, ~uint8~, _value_, *true*, ~unordered~).
+              1. Set _fromByteIndex_ to _fromByteIndex_ + _direction_.
+              1. Set _toByteIndex_ to _toByteIndex_ + _direction_.
+              1. Set _countBytes_ to _countBytes_ - 1.
           1. Return _O_.
         </emu-alg>
       </emu-clause>
@@ -42452,11 +42413,11 @@ THH:mm:ss.sss
         <emu-alg>
           1. Let _O_ be the *this* value.
           1. Let _taRecord_ be ? ValidateTypedArray(_O_, ~seq-cst~).
-          1. Let _length_ be TypedArrayLength(_taRecord_).
-          1. Let _A_ be ? TypedArrayCreateSameType(_O_, « 𝔽(_length_) »).
+          1. Let _len_ be TypedArrayLength(_taRecord_).
+          1. Let _A_ be ? TypedArrayCreateSameType(_O_, _len_).
           1. Let _k_ be 0.
-          1. Repeat, while _k_ &lt; _length_,
-            1. Let _from_ be ! ToString(𝔽(_length_ - _k_ - 1)).
+          1. Repeat, while _k_ &lt; _len_,
+            1. Let _from_ be ! ToString(𝔽(_len_ - _k_ - 1)).
             1. Let _Pk_ be ! ToString(𝔽(_k_)).
             1. Let _fromValue_ be ! Get(_O_, _from_).
             1. Perform ! Set(_A_, _Pk_, _fromValue_, *true*).
@@ -42473,7 +42434,7 @@ THH:mm:ss.sss
           1. Let _O_ be the *this* value.
           1. Let _taRecord_ be ? ValidateTypedArray(_O_, ~seq-cst~).
           1. Let _len_ be TypedArrayLength(_taRecord_).
-          1. Let _A_ be ? TypedArrayCreateSameType(_O_, « 𝔽(_len_) »).
+          1. Let _A_ be ? TypedArrayCreateSameType(_O_, _len_).
           1. NOTE: The following closure performs a numeric comparison rather than the string comparison used in <emu-xref href="#sec-array.prototype.tosorted"></emu-xref>.
           1. Let _SortCompare_ be a new Abstract Closure with parameters (_x_, _y_) that captures _comparator_ and performs the following steps when called:
             1. Return ? CompareTypedArrayElements(_x_, _y_, _comparator_).
@@ -42514,7 +42475,7 @@ THH:mm:ss.sss
           1. If _O_.[[ContentType]] is ~bigint~, let _numericValue_ be ? ToBigInt(_value_).
           1. Else, let _numericValue_ be ? ToNumber(_value_).
           1. If IsValidIntegerIndex(_O_, 𝔽(_actualIndex_)) is *false*, throw a *RangeError* exception.
-          1. Let _A_ be ? TypedArrayCreateSameType(_O_, « 𝔽(_len_) »).
+          1. Let _A_ be ? TypedArrayCreateSameType(_O_, _len_).
           1. Let _k_ be 0.
           1. Repeat, while _k_ &lt; _len_,
             1. Let _Pk_ be ! ToString(𝔽(_k_)).
@@ -42577,7 +42538,7 @@ THH:mm:ss.sss
         <h1>
           TypedArrayCreateSameType (
             _exemplar_: a TypedArray,
-            _argumentList_: a List of ECMAScript language values,
+            _length_: a non-negative integer,
           ): either a normal completion containing a TypedArray or a throw completion
         </h1>
         <dl class="header">
@@ -42586,7 +42547,8 @@ THH:mm:ss.sss
         </dl>
         <emu-alg>
           1. Let _constructor_ be the intrinsic object associated with the constructor name _exemplar_.[[TypedArrayName]] in <emu-xref href="#table-the-typedarray-constructors"></emu-xref>.
-          1. Let _result_ be ? TypedArrayCreateFromConstructor(_constructor_, _argumentList_).
+          1. Let _result_ be ? <emu-meta suppress-effects="user-code">TypedArrayCreateFromConstructor(_constructor_, « 𝔽(_length_) »)</emu-meta>.
+          1. Assert: _result_ has [[TypedArrayName]] and [[ContentType]] internal slots.
           1. Assert: _result_.[[ContentType]] is _exemplar_.[[ContentType]].
           1. Return _result_.
         </emu-alg>
@@ -42990,7 +42952,7 @@ THH:mm:ss.sss
             1. Return ThrowCompletion(_result_.[[Error]]).
           1. Let _resultLength_ be the number of elements in _result_.[[Bytes]].
           1. Let _ta_ be ? <emu-meta suppress-effects="user-code">AllocateTypedArray(*"Uint8Array"*, %Uint8Array%, *"%Uint8Array.prototype%"*, _resultLength_)</emu-meta>.
-          1. Assert: _ta_.[[ViewedArrayBuffer]].[[ArrayBufferData]].[[ArrayBufferByteLength]] = the number of elements in _result_.[[Bytes]].
+          1. Assert: _ta_.[[ViewedArrayBuffer]].[[ArrayBufferByteLength]] is the number of elements in _result_.[[Bytes]].
           1. Set the value at each index of _ta_.[[ViewedArrayBuffer]].[[ArrayBufferData]] to the value at the corresponding index of _result_.[[Bytes]].
           1. Return _ta_.
         </emu-alg>
@@ -43005,7 +42967,7 @@ THH:mm:ss.sss
             1. Return ThrowCompletion(_result_.[[Error]]).
           1. Let _resultLength_ be the number of elements in _result_.[[Bytes]].
           1. Let _ta_ be ? <emu-meta suppress-effects="user-code">AllocateTypedArray(*"Uint8Array"*, %Uint8Array%, *"%Uint8Array.prototype%"*, _resultLength_)</emu-meta>.
-          1. Assert: _ta_.[[ViewedArrayBuffer]].[[ArrayBufferData]].[[ArrayBufferByteLength]] = the number of elements in _result_.[[Bytes]].
+          1. Assert: _ta_.[[ViewedArrayBuffer]].[[ArrayBufferByteLength]] is the number of elements in _result_.[[Bytes]].
           1. Set the value at each index of _ta_.[[ViewedArrayBuffer]].[[ArrayBufferData]] to the value at the corresponding index of _result_.[[Bytes]].
           1. Return _ta_.
         </emu-alg>
@@ -43147,7 +43109,7 @@ THH:mm:ss.sss
         </emu-alg>
       </emu-clause>
 
-      <emu-clause id="sec-writeuint8arraybytes" type="abstract operation">
+      <emu-clause id="sec-setuint8arraybytes" type="abstract operation">
         <h1>
           SetUint8ArrayBytes (
             _into_: a Uint8Array,
@@ -43164,6 +43126,7 @@ THH:mm:ss.sss
             1. Let _byteIndexInBuffer_ be _index_ + _offset_.
             1. Perform SetValueInBuffer(_into_.[[ViewedArrayBuffer]], _byteIndexInBuffer_, ~uint8~, 𝔽(_byte_), *true*, ~unordered~).
             1. Set _index_ to _index_ + 1.
+          1. Return ~unused~.
         </emu-alg>
       </emu-clause>
 
@@ -43179,46 +43142,54 @@ THH:mm:ss.sss
         <emu-alg>
           1. Let _length_ be the length of _string_.
           1. Repeat, while _index_ &lt; _length_,
-            1. Let _char_ be the code unit at index _index_ of _string_.
-            1. If _char_ is neither 0x0009 (TAB), 0x000A (LF), 0x000C (FF), 0x000D (CR), nor 0x0020 (SPACE), then
+            1. Let _char_ be the code unit at index _index_ within _string_.
+            1. If _char_ is not one of 0x0009 (TAB), 0x000A (LF), 0x000C (FF), 0x000D (CR), or 0x0020 (SPACE), then
               1. Return _index_.
             1. Set _index_ to _index_ + 1.
           1. Return _index_.
         </emu-alg>
       </emu-clause>
 
-      <emu-clause id="sec-decodebase64chunk" type="abstract operation">
+      <emu-clause id="sec-decodefinalbase64chunk" type="abstract operation">
         <h1>
-          DecodeBase64Chunk (
-            _chunk_: a String,
-            optional _throwOnExtraBits_: a boolean,
+          DecodeFinalBase64Chunk (
+            _chunk_: a String of length 2 or 3,
+            _throwOnExtraBits_: a Boolean,
           ): either a normal completion containing a List of byte values, or a throw completion
+        </h1>
+        <dl class="header">
+        </dl>
+        <emu-alg>
+          1. Let _chunkLength_ be the length of _chunk_.
+          1. If _chunkLength_ = 2, then
+            1. Set _chunk_ to the string-concatenation of _chunk_ and *"AA"*.
+          1. Else,
+            1. Assert: _chunkLength_ is 3.
+            1. Set _chunk_ to the string-concatenation of _chunk_ and *"A"*.
+          1. Let _bytes_ be DecodeFullLengthBase64Chunk(_chunk_).
+          1. If _chunkLength_ = 2, then
+            1. If _throwOnExtraBits_ is *true* and _bytes_[1] ≠ 0, then
+              1. Throw a *SyntaxError* exception.
+            1. Return « _bytes_[0] ».
+          1. Else,
+            1. If _throwOnExtraBits_ is *true* and _bytes_[2] ≠ 0, then
+              1. Throw a *SyntaxError* exception.
+            1. Return « _bytes_[0], _bytes_[1] ».
+        </emu-alg>
+      </emu-clause>
+
+      <emu-clause id="sec-decodefulllengthbase64chunk" type="abstract operation">
+        <h1>
+          DecodeFullLengthBase64Chunk (
+            _chunk_: a String of length 4,
+          ): a List of byte values of length 3
         </h1>
         <dl class="header">
         </dl>
         <p>The <dfn id="standard-base64-alphabet">standard base64 alphabet</dfn> is *"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"*, i.e., the String whose elements are the code units corresponding to every letter and number in the Unicode Basic Latin block along with *"+"* and *"/"*.</p>
         <emu-alg>
-          1. Let _chunkLength_ be the length of _chunk_.
-          1. If _chunkLength_ is 2, then
-            1. Set _chunk_ to the string-concatenation of _chunk_ and *"AA"*.
-          1. Else if _chunkLength_ is 3, then
-            1. Set _chunk_ to the string-concatenation of _chunk_ and *"A"*.
-          1. Else,
-            1. Assert: _chunkLength_ is 4.
-          1. Let _byteSequence_ be the unique sequence of 3 bytes resulting from decoding _chunk_ as base64 (such that applying the base64 encoding specified in section 4 of <a href="https://datatracker.ietf.org/doc/html/rfc4648">RFC 4648</a> to _byteSequence_ would produce _chunk_).
-          1. Let _bytes_ be a List whose elements are the elements of _byteSequence_, in order.
-          1. If _chunkLength_ is 2, then
-            1. Assert: _throwOnExtraBits_ is present.
-            1. If _throwOnExtraBits_ is *true* and _bytes_[1] ≠ 0, then
-              1. Throw a *SyntaxError* exception.
-            1. Return « _bytes_[0] ».
-          1. Else if _chunkLength_ is 3, then
-            1. Assert: _throwOnExtraBits_ is present.
-            1. If _throwOnExtraBits_ is *true* and _bytes_[2] ≠ 0, then
-              1. Throw a *SyntaxError* exception.
-            1. Return « _bytes_[0], _bytes_[1] ».
-          1. Else,
-            1. Return _bytes_.
+          1. Let _byteSequence_ be the unique sequence of 3 bytes resulting from decoding _chunk_ as base64 (i.e., the sequence such that applying the base64 encoding specified in section 4 of <a href="https://datatracker.ietf.org/doc/html/rfc4648">RFC 4648</a> to _byteSequence_ would produce _chunk_).
+          1. Return a List whose elements are the elements of _byteSequence_, in order.
         </emu-alg>
       </emu-clause>
 
@@ -43229,16 +43200,16 @@ THH:mm:ss.sss
             _alphabet_: *"base64"* or *"base64url"*,
             _lastChunkHandling_: *"loose"*, *"strict"*, or *"stop-before-partial"*,
             optional _maxLength_: a non-negative integer,
-          ): a Record with fields [[Read]] (an integral Number), [[Bytes]] (a List of byte values), and [[Error]] (either ~none~ or a *SyntaxError* object)
+          ): a Record with fields [[Read]] (an integer), [[Bytes]] (a List of byte values), and [[Error]] (a *SyntaxError* object or ~none~)
         </h1>
         <dl class="header">
         </dl>
         <emu-alg>
           1. If _maxLength_ is not present, then
-            1. Let _maxLength_ be 2<sup>53</sup> - 1.
+            1. Set _maxLength_ to 2<sup>53</sup> - 1.
             1. NOTE: Because the input is a String, the length of Strings is limited to 2<sup>53</sup> - 1 characters, and the output requires no more bytes than the input has characters, this limit can never be reached. However, it is editorially convenient to use a finite value for _maxLength_.
           1. NOTE: The order of validation and decoding in the algorithm below is not observable. Implementations are encouraged to perform them in whatever order is most efficient, possibly interleaving validation with decoding.
-          1. If _maxLength_ is 0, then
+          1. If _maxLength_ = 0, then
             1. Return the Record { [[Read]]: 0, [[Bytes]]: « », [[Error]]: ~none~ }.
           1. Let _read_ be 0.
           1. Let _bytes_ be a new empty List.
@@ -43254,35 +43225,35 @@ THH:mm:ss.sss
                   1. Return the Record { [[Read]]: _read_, [[Bytes]]: _bytes_, [[Error]]: ~none~ }.
                 1. Else if _lastChunkHandling_ is *"loose"*, then
                   1. If _chunkLength_ = 1, then
-                    1. Let _error_ be a new *SyntaxError* exception.
+                    1. Let _error_ be a newly created *SyntaxError* object.
                     1. Return the Record { [[Read]]: _read_, [[Bytes]]: _bytes_, [[Error]]: _error_ }.
-                  1. Set _bytes_ to the list-concatenation of _bytes_ and ! DecodeBase64Chunk(_chunk_, *false*).
+                  1. Set _bytes_ to the list-concatenation of _bytes_ and ! DecodeFinalBase64Chunk(_chunk_, *false*).
                 1. Else,
                   1. Assert: _lastChunkHandling_ is *"strict"*.
-                  1. Let _error_ be a new *SyntaxError* exception.
+                  1. Let _error_ be a newly created *SyntaxError* object.
                   1. Return the Record { [[Read]]: _read_, [[Bytes]]: _bytes_, [[Error]]: _error_ }.
               1. Return the Record { [[Read]]: _length_, [[Bytes]]: _bytes_, [[Error]]: ~none~ }.
             1. Let _char_ be the substring of _string_ from _index_ to _index_ + 1.
             1. Set _index_ to _index_ + 1.
             1. If _char_ is *"="*, then
               1. If _chunkLength_ &lt; 2, then
-                1. Let _error_ be a new *SyntaxError* exception.
+                1. Let _error_ be a newly created *SyntaxError* object.
                 1. Return the Record { [[Read]]: _read_, [[Bytes]]: _bytes_, [[Error]]: _error_ }.
               1. Set _index_ to SkipAsciiWhitespace(_string_, _index_).
               1. If _chunkLength_ = 2, then
                 1. If _index_ = _length_, then
                   1. If _lastChunkHandling_ is *"stop-before-partial"*, then
                     1. Return the Record { [[Read]]: _read_, [[Bytes]]: _bytes_, [[Error]]: ~none~ }.
-                  1. Let _error_ be a new *SyntaxError* exception.
+                  1. Let _error_ be a newly created *SyntaxError* object.
                   1. Return the Record { [[Read]]: _read_, [[Bytes]]: _bytes_, [[Error]]: _error_ }.
                 1. Set _char_ to the substring of _string_ from _index_ to _index_ + 1.
                 1. If _char_ is *"="*, then
                   1. Set _index_ to SkipAsciiWhitespace(_string_, _index_ + 1).
               1. If _index_ &lt; _length_, then
-                1. Let _error_ be a new *SyntaxError* exception.
+                1. Let _error_ be a newly created *SyntaxError* object.
                 1. Return the Record { [[Read]]: _read_, [[Bytes]]: _bytes_, [[Error]]: _error_ }.
               1. If _lastChunkHandling_ is *"strict"*, let _throwOnExtraBits_ be *true*; otherwise let _throwOnExtraBits_ be *false*.
-              1. Let _decodeResult_ be Completion(DecodeBase64Chunk(_chunk_, _throwOnExtraBits_)).
+              1. Let _decodeResult_ be Completion(DecodeFinalBase64Chunk(_chunk_, _throwOnExtraBits_)).
               1. If _decodeResult_ is an abrupt completion, then
                 1. Let _error_ be _decodeResult_.[[Value]].
                 1. Return the Record { [[Read]]: _read_, [[Bytes]]: _bytes_, [[Error]]: _error_ }.
@@ -43290,14 +43261,14 @@ THH:mm:ss.sss
               1. Return the Record { [[Read]]: _length_, [[Bytes]]: _bytes_, [[Error]]: ~none~ }.
             1. If _alphabet_ is *"base64url"*, then
               1. If _char_ is either *"+"* or *"/"*, then
-                1. Let _error_ be a new *SyntaxError* exception.
+                1. Let _error_ be a newly created *SyntaxError* object.
                 1. Return the Record { [[Read]]: _read_, [[Bytes]]: _bytes_, [[Error]]: _error_ }.
               1. Else if _char_ is *"-"*, then
                 1. Set _char_ to *"+"*.
               1. Else if _char_ is *"_"*, then
                 1. Set _char_ to *"/"*.
             1. If the sole code unit of _char_ is not an element of the standard base64 alphabet, then
-              1. Let _error_ be a new *SyntaxError* exception.
+              1. Let _error_ be a newly created *SyntaxError* object.
               1. Return the Record { [[Read]]: _read_, [[Bytes]]: _bytes_, [[Error]]: _error_ }.
             1. Let _remaining_ be _maxLength_ - the number of elements in _bytes_.
             1. If _remaining_ = 1 and _chunkLength_ = 2, or if _remaining_ = 2 and _chunkLength_ = 3, then
@@ -43305,7 +43276,7 @@ THH:mm:ss.sss
             1. Set _chunk_ to the string-concatenation of _chunk_ and _char_.
             1. Set _chunkLength_ to the length of _chunk_.
             1. If _chunkLength_ = 4, then
-              1. Set _bytes_ to the list-concatenation of _bytes_ and ! DecodeBase64Chunk(_chunk_).
+              1. Set _bytes_ to the list-concatenation of _bytes_ and DecodeFullLengthBase64Chunk(_chunk_).
               1. Set _chunk_ to the empty String.
               1. Set _chunkLength_ to 0.
               1. Set _read_ to _index_.
@@ -43319,7 +43290,7 @@ THH:mm:ss.sss
           FromHex (
             _string_: a String,
             optional _maxLength_: a non-negative integer,
-          ): a Record with fields [[Read]] (an integral Number), [[Bytes]] (a List of byte values), and [[Error]] (either ~none~ or a *SyntaxError* object)
+          ): a Record with fields [[Read]] (an integer), [[Bytes]] (a List of byte values), and [[Error]] (a *SyntaxError* object or ~none~)
         </h1>
         <dl class="header">
         </dl>
@@ -43329,15 +43300,15 @@ THH:mm:ss.sss
           1. Let _bytes_ be a new empty List.
           1. Let _read_ be 0.
           1. If _length_ modulo 2 ≠ 0, then
-            1. Let _error_ be a new *SyntaxError* exception.
+            1. Let _error_ be a newly created *SyntaxError* object.
             1. Return the Record { [[Read]]: _read_, [[Bytes]]: _bytes_, [[Error]]: _error_ }.
           1. Repeat, while _read_ &lt; _length_ and the number of elements in _bytes_ &lt; _maxLength_,
             1. Let _hexits_ be the substring of _string_ from _read_ to _read_ + 2.
             1. If _hexits_ contains any code units which are not in *"0123456789abcdefABCDEF"*, then
-              1. Let _error_ be a new *SyntaxError* exception.
+              1. Let _error_ be a newly created *SyntaxError* object.
               1. Return the Record { [[Read]]: _read_, [[Bytes]]: _bytes_, [[Error]]: _error_ }.
             1. Set _read_ to _read_ + 2.
-            1. Let _byte_ be the integer value represented by _hexits_ in base-16 notation, using the letters A* through *F* and *a* through *f* for digits with values 10 through 15.
+            1. Let _byte_ be the integer value represented by _hexits_ in base-16 notation, using the letters *A* through *F* and *a* through *f* for digits with values 10 through 15.
             1. Append _byte_ to _bytes_.
           1. Return the Record { [[Read]]: _read_, [[Bytes]]: _bytes_, [[Error]]: ~none~ }.
         </emu-alg>
@@ -48120,374 +48091,374 @@ THH:mm:ss.sss
           <p>This property has the attributes { [[Writable]]: *false*, [[Enumerable]]: *false*, [[Configurable]]: *false* }.</p>
         </emu-clause>
       </emu-clause>
-    </emu-clause>
 
-    <emu-clause oldids="sec-%iteratorprototype%-object" id="sec-%iterator.prototype%-object">
-      <h1>Properties of the Iterator Prototype Object</h1>
-      <p>The <dfn>Iterator prototype object</dfn>:</p>
-      <ul>
-        <li>is <dfn>%Iterator.prototype%</dfn>.</li>
-        <li>has a [[Prototype]] internal slot whose value is %Object.prototype%.</li>
-        <li>is an ordinary object.</li>
-      </ul>
-      <emu-note>
-        <p>All objects defined in this specification that implement the iterator interface also inherit from %Iterator.prototype%. ECMAScript code may also define objects that inherit from %Iterator.prototype%. %Iterator.prototype% provides a place where additional methods that are applicable to all iterator objects may be added.</p>
-        <p>The following expression is one way that ECMAScript code can access the %Iterator.prototype% object:</p>
-        <pre><code class="javascript">Object.getPrototypeOf(Object.getPrototypeOf([][Symbol.iterator]()))</code></pre>
-      </emu-note>
-
-      <emu-clause id="sec-iterator.prototype.constructor">
-        <h1>Iterator.prototype.constructor</h1>
-        <p>`Iterator.prototype.constructor` is an accessor property with attributes { [[Enumerable]]: *false*, [[Configurable]]: *true* }. The [[Get]] and [[Set]] attributes are defined as follows:</p>
-
-        <emu-clause id="sec-get-iterator.prototype.constructor">
-          <h1>get Iterator.prototype.constructor</h1>
-          <p>The value of the [[Get]] attribute is a built-in function that requires no arguments. It performs the following steps when called:</p>
-          <emu-alg>
-            1. Return %Iterator%.
-          </emu-alg>
-        </emu-clause>
-
-        <emu-clause id="sec-set-iterator.prototype.constructor">
-          <h1>set Iterator.prototype.constructor</h1>
-          <p>The value of the [[Set]] attribute is a built-in function that takes an argument _v_. It performs the following steps when called:</p>
-          <emu-alg>
-            1. Perform ? SetterThatIgnoresPrototypeProperties(*this* value, %Iterator.prototype%, *"constructor"*, _v_).
-            1. Return *undefined*.
-          </emu-alg>
-        </emu-clause>
-
+      <emu-clause oldids="sec-%iteratorprototype%-object" id="sec-%iterator.prototype%-object">
+        <h1>Properties of the Iterator Prototype Object</h1>
+        <p>The <dfn>Iterator prototype object</dfn>:</p>
+        <ul>
+          <li>is <dfn>%Iterator.prototype%</dfn>.</li>
+          <li>has a [[Prototype]] internal slot whose value is %Object.prototype%.</li>
+          <li>is an ordinary object.</li>
+        </ul>
         <emu-note>
-          <p>Unlike the *"constructor"* property on most built-in prototypes, for web-compatibility reasons this property must be an accessor.</p>
+          <p>All objects defined in this specification that implement the iterator interface also inherit from %Iterator.prototype%. ECMAScript code may also define objects that inherit from %Iterator.prototype%. %Iterator.prototype% provides a place where additional methods that are applicable to all iterator objects may be added.</p>
+          <p>The following expression is one way that ECMAScript code can access the %Iterator.prototype% object:</p>
+          <pre><code class="javascript">Object.getPrototypeOf(Object.getPrototypeOf([][Symbol.iterator]()))</code></pre>
         </emu-note>
-      </emu-clause>
 
-      <emu-clause id="sec-iterator.prototype.drop">
-        <h1>Iterator.prototype.drop ( _limit_ )</h1>
-        <p>This method performs the following steps when called:</p>
-        <emu-alg>
-          1. Let _O_ be the *this* value.
-          1. If _O_ is not an Object, throw a *TypeError* exception.
-          1. Let _iterated_ be the Iterator Record { [[Iterator]]: _O_, [[NextMethod]]: *undefined*, [[Done]]: *false* }.
-          1. Let _numLimit_ be Completion(ToNumber(_limit_)).
-          1. IfAbruptCloseIterator(_numLimit_, _iterated_).
-          1. If _numLimit_ is *NaN*, then
-            1. Let _error_ be ThrowCompletion(a newly created *RangeError* object).
-            1. Return ? IteratorClose(_iterated_, _error_).
-          1. Let _integerLimit_ be ! ToIntegerOrInfinity(_numLimit_).
-          1. If _integerLimit_ &lt; 0, then
-            1. Let _error_ be ThrowCompletion(a newly created *RangeError* object).
-            1. Return ? IteratorClose(_iterated_, _error_).
-          1. Set _iterated_ to ? GetIteratorDirect(_O_).
-          1. Let _closure_ be a new Abstract Closure with no parameters that captures _iterated_ and _integerLimit_ and performs the following steps when called:
-            1. Let _remaining_ be _integerLimit_.
-            1. Repeat, while _remaining_ > 0,
-              1. If _remaining_ ≠ +∞, then
-                1. Set _remaining_ to _remaining_ - 1.
-              1. Let _next_ be ? IteratorStep(_iterated_).
-              1. If _next_ is ~done~, return ReturnCompletion(*undefined*).
-            1. Repeat,
-              1. Let _value_ be ? IteratorStepValue(_iterated_).
-              1. If _value_ is ~done~, return ReturnCompletion(*undefined*).
-              1. Let _completion_ be Completion(Yield(_value_)).
-              1. IfAbruptCloseIterator(_completion_, _iterated_).
-          1. Let _result_ be CreateIteratorFromClosure(_closure_, *"Iterator Helper"*, %IteratorHelperPrototype%, « [[UnderlyingIterator]] »).
-          1. Set _result_.[[UnderlyingIterator]] to _iterated_.
-          1. Return _result_.
-        </emu-alg>
-      </emu-clause>
+        <emu-clause id="sec-iterator.prototype.constructor">
+          <h1>Iterator.prototype.constructor</h1>
+          <p>`Iterator.prototype.constructor` is an accessor property with attributes { [[Enumerable]]: *false*, [[Configurable]]: *true* }. The [[Get]] and [[Set]] attributes are defined as follows:</p>
 
-      <emu-clause id="sec-iterator.prototype.every">
-        <h1>Iterator.prototype.every ( _predicate_ )</h1>
-        <p>This method performs the following steps when called:</p>
-        <emu-alg>
-          1. Let _O_ be the *this* value.
-          1. If _O_ is not an Object, throw a *TypeError* exception.
-          1. Let _iterated_ be the Iterator Record { [[Iterator]]: _O_, [[NextMethod]]: *undefined*, [[Done]]: *false* }.
-          1. If IsCallable(_predicate_) is *false*, then
-            1. Let _error_ be ThrowCompletion(a newly created *TypeError* object).
-            1. Return ? IteratorClose(_iterated_, _error_).
-          1. Set _iterated_ to ? GetIteratorDirect(_O_).
-          1. Let _counter_ be 0.
-          1. Repeat,
-            1. Let _value_ be ? IteratorStepValue(_iterated_).
-            1. If _value_ is ~done~, return *true*.
-            1. Let _result_ be Completion(Call(_predicate_, *undefined*, « _value_, 𝔽(_counter_) »)).
-            1. IfAbruptCloseIterator(_result_, _iterated_).
-            1. If ToBoolean(_result_) is *false*, return ? IteratorClose(_iterated_, NormalCompletion(*false*)).
-            1. Set _counter_ to _counter_ + 1.
-        </emu-alg>
-      </emu-clause>
+          <emu-clause id="sec-get-iterator.prototype.constructor">
+            <h1>get Iterator.prototype.constructor</h1>
+            <p>The value of the [[Get]] attribute is a built-in function that requires no arguments. It performs the following steps when called:</p>
+            <emu-alg>
+              1. Return %Iterator%.
+            </emu-alg>
+          </emu-clause>
 
-      <emu-clause id="sec-iterator.prototype.filter">
-        <h1>Iterator.prototype.filter ( _predicate_ )</h1>
-        <p>This method performs the following steps when called:</p>
-        <emu-alg>
-          1. Let _O_ be the *this* value.
-          1. If _O_ is not an Object, throw a *TypeError* exception.
-          1. Let _iterated_ be the Iterator Record { [[Iterator]]: _O_, [[NextMethod]]: *undefined*, [[Done]]: *false* }.
-          1. If IsCallable(_predicate_) is *false*, then
-            1. Let _error_ be ThrowCompletion(a newly created *TypeError* object).
-            1. Return ? IteratorClose(_iterated_, _error_).
-          1. Set _iterated_ to ? GetIteratorDirect(_O_).
-          1. Let _closure_ be a new Abstract Closure with no parameters that captures _iterated_ and _predicate_ and performs the following steps when called:
-            1. Let _counter_ be 0.
-            1. Repeat,
-              1. Let _value_ be ? IteratorStepValue(_iterated_).
-              1. If _value_ is ~done~, return ReturnCompletion(*undefined*).
-              1. Let _selected_ be Completion(Call(_predicate_, *undefined*, « _value_, 𝔽(_counter_) »)).
-              1. IfAbruptCloseIterator(_selected_, _iterated_).
-              1. If ToBoolean(_selected_) is *true*, then
+          <emu-clause id="sec-set-iterator.prototype.constructor">
+            <h1>set Iterator.prototype.constructor</h1>
+            <p>The value of the [[Set]] attribute is a built-in function that takes an argument _v_. It performs the following steps when called:</p>
+            <emu-alg>
+              1. Perform ? SetterThatIgnoresPrototypeProperties(*this* value, %Iterator.prototype%, *"constructor"*, _v_).
+              1. Return *undefined*.
+            </emu-alg>
+          </emu-clause>
+
+          <emu-note>
+            <p>Unlike the *"constructor"* property on most built-in prototypes, for web-compatibility reasons this property must be an accessor.</p>
+          </emu-note>
+        </emu-clause>
+
+        <emu-clause id="sec-iterator.prototype.drop">
+          <h1>Iterator.prototype.drop ( _limit_ )</h1>
+          <p>This method performs the following steps when called:</p>
+          <emu-alg>
+            1. Let _O_ be the *this* value.
+            1. If _O_ is not an Object, throw a *TypeError* exception.
+            1. Let _iterated_ be the Iterator Record { [[Iterator]]: _O_, [[NextMethod]]: *undefined*, [[Done]]: *false* }.
+            1. Let _numLimit_ be Completion(ToNumber(_limit_)).
+            1. IfAbruptCloseIterator(_numLimit_, _iterated_).
+            1. If _numLimit_ is *NaN*, then
+              1. Let _error_ be ThrowCompletion(a newly created *RangeError* object).
+              1. Return ? IteratorClose(_iterated_, _error_).
+            1. Let _integerLimit_ be ! ToIntegerOrInfinity(_numLimit_).
+            1. If _integerLimit_ &lt; 0, then
+              1. Let _error_ be ThrowCompletion(a newly created *RangeError* object).
+              1. Return ? IteratorClose(_iterated_, _error_).
+            1. Set _iterated_ to ? GetIteratorDirect(_O_).
+            1. Let _closure_ be a new Abstract Closure with no parameters that captures _iterated_ and _integerLimit_ and performs the following steps when called:
+              1. Let _remaining_ be _integerLimit_.
+              1. Repeat, while _remaining_ > 0,
+                1. If _remaining_ ≠ +∞, then
+                  1. Set _remaining_ to _remaining_ - 1.
+                1. Let _next_ be ? IteratorStep(_iterated_).
+                1. If _next_ is ~done~, return ReturnCompletion(*undefined*).
+              1. Repeat,
+                1. Let _value_ be ? IteratorStepValue(_iterated_).
+                1. If _value_ is ~done~, return ReturnCompletion(*undefined*).
                 1. Let _completion_ be Completion(Yield(_value_)).
                 1. IfAbruptCloseIterator(_completion_, _iterated_).
-              1. Set _counter_ to _counter_ + 1.
-          1. Let _result_ be CreateIteratorFromClosure(_closure_, *"Iterator Helper"*, %IteratorHelperPrototype%, « [[UnderlyingIterator]] »).
-          1. Set _result_.[[UnderlyingIterator]] to _iterated_.
-          1. Return _result_.
-        </emu-alg>
-      </emu-clause>
-
-      <emu-clause id="sec-iterator.prototype.find">
-        <h1>Iterator.prototype.find ( _predicate_ )</h1>
-        <p>This method performs the following steps when called:</p>
-        <emu-alg>
-          1. Let _O_ be the *this* value.
-          1. If _O_ is not an Object, throw a *TypeError* exception.
-          1. Let _iterated_ be the Iterator Record { [[Iterator]]: _O_, [[NextMethod]]: *undefined*, [[Done]]: *false* }.
-          1. If IsCallable(_predicate_) is *false*, then
-            1. Let _error_ be ThrowCompletion(a newly created *TypeError* object).
-            1. Return ? IteratorClose(_iterated_, _error_).
-          1. Set _iterated_ to ? GetIteratorDirect(_O_).
-          1. Let _counter_ be 0.
-          1. Repeat,
-            1. Let _value_ be ? IteratorStepValue(_iterated_).
-            1. If _value_ is ~done~, return *undefined*.
-            1. Let _result_ be Completion(Call(_predicate_, *undefined*, « _value_, 𝔽(_counter_) »)).
-            1. IfAbruptCloseIterator(_result_, _iterated_).
-            1. If ToBoolean(_result_) is *true*, return ? IteratorClose(_iterated_, NormalCompletion(_value_)).
-            1. Set _counter_ to _counter_ + 1.
-        </emu-alg>
-      </emu-clause>
-
-      <emu-clause id="sec-iterator.prototype.flatmap">
-        <h1>Iterator.prototype.flatMap ( _mapper_ )</h1>
-        <p>This method performs the following steps when called:</p>
-        <emu-alg>
-          1. Let _O_ be the *this* value.
-          1. If _O_ is not an Object, throw a *TypeError* exception.
-          1. Let _iterated_ be the Iterator Record { [[Iterator]]: _O_, [[NextMethod]]: *undefined*, [[Done]]: *false* }.
-          1. If IsCallable(_mapper_) is *false*, then
-            1. Let _error_ be ThrowCompletion(a newly created *TypeError* object).
-            1. Return ? IteratorClose(_iterated_, _error_).
-          1. Set _iterated_ to ? GetIteratorDirect(_O_).
-          1. Let _closure_ be a new Abstract Closure with no parameters that captures _iterated_ and _mapper_ and performs the following steps when called:
-            1. Let _counter_ be 0.
-            1. Repeat,
-              1. Let _value_ be ? IteratorStepValue(_iterated_).
-              1. If _value_ is ~done~, return ReturnCompletion(*undefined*).
-              1. Let _mapped_ be Completion(Call(_mapper_, *undefined*, « _value_, 𝔽(_counter_) »)).
-              1. IfAbruptCloseIterator(_mapped_, _iterated_).
-              1. Let _innerIterator_ be Completion(GetIteratorFlattenable(_mapped_, ~reject-primitives~)).
-              1. IfAbruptCloseIterator(_innerIterator_, _iterated_).
-              1. Let _innerAlive_ be *true*.
-              1. Repeat, while _innerAlive_ is *true*,
-                1. Let _innerValue_ be Completion(IteratorStepValue(_innerIterator_)).
-                1. IfAbruptCloseIterator(_innerValue_, _iterated_).
-                1. If _innerValue_ is ~done~, then
-                  1. Set _innerAlive_ to *false*.
-                1. Else,
-                  1. Let _completion_ be Completion(Yield(_innerValue_)).
-                  1. If _completion_ is an abrupt completion, then
-                    1. Let _backupCompletion_ be Completion(IteratorClose(_innerIterator_, _completion_)).
-                    1. IfAbruptCloseIterator(_backupCompletion_, _iterated_).
-                    1. Return ? IteratorClose(_iterated_, _completion_).
-              1. Set _counter_ to _counter_ + 1.
-          1. Let _result_ be CreateIteratorFromClosure(_closure_, *"Iterator Helper"*, %IteratorHelperPrototype%, « [[UnderlyingIterator]] »).
-          1. Set _result_.[[UnderlyingIterator]] to _iterated_.
-          1. Return _result_.
-        </emu-alg>
-      </emu-clause>
-
-      <emu-clause id="sec-iterator.prototype.foreach">
-        <h1>Iterator.prototype.forEach ( _procedure_ )</h1>
-        <p>This method performs the following steps when called:</p>
-        <emu-alg>
-          1. Let _O_ be the *this* value.
-          1. If _O_ is not an Object, throw a *TypeError* exception.
-          1. Let _iterated_ be the Iterator Record { [[Iterator]]: _O_, [[NextMethod]]: *undefined*, [[Done]]: *false* }.
-          1. If IsCallable(_procedure_) is *false*, then
-            1. Let _error_ be ThrowCompletion(a newly created *TypeError* object).
-            1. Return ? IteratorClose(_iterated_, _error_).
-          1. Set _iterated_ to ? GetIteratorDirect(_O_).
-          1. Let _counter_ be 0.
-          1. Repeat,
-            1. Let _value_ be ? IteratorStepValue(_iterated_).
-            1. If _value_ is ~done~, return *undefined*.
-            1. Let _result_ be Completion(Call(_procedure_, *undefined*, « _value_, 𝔽(_counter_) »)).
-            1. IfAbruptCloseIterator(_result_, _iterated_).
-            1. Set _counter_ to _counter_ + 1.
-        </emu-alg>
-      </emu-clause>
-
-      <emu-clause id="sec-iterator.prototype.map">
-        <h1>Iterator.prototype.map ( _mapper_ )</h1>
-        <p>This method performs the following steps when called:</p>
-        <emu-alg>
-          1. Let _O_ be the *this* value.
-          1. If _O_ is not an Object, throw a *TypeError* exception.
-          1. Let _iterated_ be the Iterator Record { [[Iterator]]: _O_, [[NextMethod]]: *undefined*, [[Done]]: *false* }.
-          1. If IsCallable(_mapper_) is *false*, then
-            1. Let _error_ be ThrowCompletion(a newly created *TypeError* object).
-            1. Return ? IteratorClose(_iterated_, _error_).
-          1. Set _iterated_ to ? GetIteratorDirect(_O_).
-          1. Let _closure_ be a new Abstract Closure with no parameters that captures _iterated_ and _mapper_ and performs the following steps when called:
-            1. Let _counter_ be 0.
-            1. Repeat,
-              1. Let _value_ be ? IteratorStepValue(_iterated_).
-              1. If _value_ is ~done~, return ReturnCompletion(*undefined*).
-              1. Let _mapped_ be Completion(Call(_mapper_, *undefined*, « _value_, 𝔽(_counter_) »)).
-              1. IfAbruptCloseIterator(_mapped_, _iterated_).
-              1. Let _completion_ be Completion(Yield(_mapped_)).
-              1. IfAbruptCloseIterator(_completion_, _iterated_).
-              1. Set _counter_ to _counter_ + 1.
-          1. Let _result_ be CreateIteratorFromClosure(_closure_, *"Iterator Helper"*, %IteratorHelperPrototype%, « [[UnderlyingIterator]] »).
-          1. Set _result_.[[UnderlyingIterator]] to _iterated_.
-          1. Return _result_.
-        </emu-alg>
-      </emu-clause>
-
-      <emu-clause id="sec-iterator.prototype.reduce">
-        <h1>Iterator.prototype.reduce ( _reducer_ [ , _initialValue_ ] )</h1>
-        <p>This method performs the following steps when called:</p>
-        <emu-alg>
-          1. Let _O_ be the *this* value.
-          1. If _O_ is not an Object, throw a *TypeError* exception.
-          1. Let _iterated_ be the Iterator Record { [[Iterator]]: _O_, [[NextMethod]]: *undefined*, [[Done]]: *false* }.
-          1. If IsCallable(_reducer_) is *false*, then
-            1. Let _error_ be ThrowCompletion(a newly created *TypeError* object).
-            1. Return ? IteratorClose(_iterated_, _error_).
-          1. Set _iterated_ to ? GetIteratorDirect(_O_).
-          1. If _initialValue_ is not present, then
-            1. Let _accumulator_ be ? IteratorStepValue(_iterated_).
-            1. If _accumulator_ is ~done~, throw a *TypeError* exception.
-            1. Let _counter_ be 1.
-          1. Else,
-            1. Let _accumulator_ be _initialValue_.
-            1. Let _counter_ be 0.
-          1. Repeat,
-            1. Let _value_ be ? IteratorStepValue(_iterated_).
-            1. If _value_ is ~done~, return _accumulator_.
-            1. Let _result_ be Completion(Call(_reducer_, *undefined*, « _accumulator_, _value_, 𝔽(_counter_) »)).
-            1. IfAbruptCloseIterator(_result_, _iterated_).
-            1. Set _accumulator_ to _result_.
-            1. Set _counter_ to _counter_ + 1.
-        </emu-alg>
-      </emu-clause>
-
-      <emu-clause id="sec-iterator.prototype.some">
-        <h1>Iterator.prototype.some ( _predicate_ )</h1>
-        <p>This method performs the following steps when called:</p>
-        <emu-alg>
-          1. Let _O_ be the *this* value.
-          1. If _O_ is not an Object, throw a *TypeError* exception.
-          1. Let _iterated_ be the Iterator Record { [[Iterator]]: _O_, [[NextMethod]]: *undefined*, [[Done]]: *false* }.
-          1. If IsCallable(_predicate_) is *false*, then
-            1. Let _error_ be ThrowCompletion(a newly created *TypeError* object).
-            1. Return ? IteratorClose(_iterated_, _error_).
-          1. Set _iterated_ to ? GetIteratorDirect(_O_).
-          1. Let _counter_ be 0.
-          1. Repeat,
-            1. Let _value_ be ? IteratorStepValue(_iterated_).
-            1. If _value_ is ~done~, return *false*.
-            1. Let _result_ be Completion(Call(_predicate_, *undefined*, « _value_, 𝔽(_counter_) »)).
-            1. IfAbruptCloseIterator(_result_, _iterated_).
-            1. If ToBoolean(_result_) is *true*, return ? IteratorClose(_iterated_, NormalCompletion(*true*)).
-            1. Set _counter_ to _counter_ + 1.
-        </emu-alg>
-      </emu-clause>
-
-      <emu-clause id="sec-iterator.prototype.take">
-        <h1>Iterator.prototype.take ( _limit_ )</h1>
-        <p>This method performs the following steps when called:</p>
-        <emu-alg>
-          1. Let _O_ be the *this* value.
-          1. If _O_ is not an Object, throw a *TypeError* exception.
-          1. Let _iterated_ be the Iterator Record { [[Iterator]]: _O_, [[NextMethod]]: *undefined*, [[Done]]: *false* }.
-          1. Let _numLimit_ be Completion(ToNumber(_limit_)).
-          1. IfAbruptCloseIterator(_numLimit_, _iterated_).
-          1. If _numLimit_ is *NaN*, then
-            1. Let _error_ be ThrowCompletion(a newly created *RangeError* object).
-            1. Return ? IteratorClose(_iterated_, _error_).
-          1. Let _integerLimit_ be ! ToIntegerOrInfinity(_numLimit_).
-          1. If _integerLimit_ &lt; 0, then
-            1. Let _error_ be ThrowCompletion(a newly created *RangeError* object).
-            1. Return ? IteratorClose(_iterated_, _error_).
-          1. Set _iterated_ to ? GetIteratorDirect(_O_).
-          1. Let _closure_ be a new Abstract Closure with no parameters that captures _iterated_ and _integerLimit_ and performs the following steps when called:
-            1. Let _remaining_ be _integerLimit_.
-            1. Repeat,
-              1. If _remaining_ = 0, then
-                1. Return ? IteratorClose(_iterated_, ReturnCompletion(*undefined*)).
-              1. If _remaining_ ≠ +∞, then
-                1. Set _remaining_ to _remaining_ - 1.
-              1. Let _value_ be ? IteratorStepValue(_iterated_).
-              1. If _value_ is ~done~, return ReturnCompletion(*undefined*).
-              1. Let _completion_ be Completion(Yield(_value_)).
-              1. IfAbruptCloseIterator(_completion_, _iterated_).
-          1. Let _result_ be CreateIteratorFromClosure(_closure_, *"Iterator Helper"*, %IteratorHelperPrototype%, « [[UnderlyingIterator]] »).
-          1. Set _result_.[[UnderlyingIterator]] to _iterated_.
-          1. Return _result_.
-        </emu-alg>
-      </emu-clause>
-
-      <emu-clause id="sec-iterator.prototype.toarray">
-        <h1>Iterator.prototype.toArray ( )</h1>
-        <p>This method performs the following steps when called:</p>
-        <emu-alg>
-          1. Let _O_ be the *this* value.
-          1. If _O_ is not an Object, throw a *TypeError* exception.
-          1. Let _iterated_ be ? GetIteratorDirect(_O_).
-          1. Let _items_ be a new empty List.
-          1. Repeat,
-            1. Let _value_ be ? IteratorStepValue(_iterated_).
-            1. If _value_ is ~done~, return CreateArrayFromList(_items_).
-            1. Append _value_ to _items_.
-        </emu-alg>
-      </emu-clause>
-
-      <emu-clause oldids="sec-%iteratorprototype%-@@iterator,sec-%iteratorprototype%-%symbol.iterator%" id="sec-iterator.prototype-%symbol.iterator%">
-        <h1>Iterator.prototype [ %Symbol.iterator% ] ( )</h1>
-        <p>This function performs the following steps when called:</p>
-        <emu-alg>
-          1. Return the *this* value.
-        </emu-alg>
-        <p>The value of the *"name"* property of this function is *"[Symbol.iterator]"*.</p>
-      </emu-clause>
-
-      <emu-clause id="sec-iterator.prototype-%symbol.tostringtag%">
-        <h1>Iterator.prototype [ %Symbol.toStringTag% ]</h1>
-        <p>`Iterator.prototype[%Symbol.toStringTag%]` is an accessor property with attributes { [[Enumerable]]: *false*, [[Configurable]]: *true* }. The [[Get]] and [[Set]] attributes are defined as follows:</p>
-
-        <emu-clause id="sec-get-iterator.prototype-%symbol.tostringtag%">
-          <h1>get Iterator.prototype [ %Symbol.toStringTag% ]</h1>
-          <p>The value of the [[Get]] attribute is a built-in function that requires no arguments. It performs the following steps when called:</p>
-          <emu-alg>
-            1. Return *"Iterator"*.
+            1. Let _result_ be CreateIteratorFromClosure(_closure_, *"Iterator Helper"*, %IteratorHelperPrototype%, « [[UnderlyingIterator]] »).
+            1. Set _result_.[[UnderlyingIterator]] to _iterated_.
+            1. Return _result_.
           </emu-alg>
         </emu-clause>
 
-        <emu-clause id="sec-set-iterator.prototype-%symbol.tostringtag%">
-          <h1>set Iterator.prototype [ %Symbol.toStringTag% ]</h1>
-          <p>The value of the [[Set]] attribute is a built-in function that takes an argument _v_. It performs the following steps when called:</p>
+        <emu-clause id="sec-iterator.prototype.every">
+          <h1>Iterator.prototype.every ( _predicate_ )</h1>
+          <p>This method performs the following steps when called:</p>
           <emu-alg>
-            1. Perform ? SetterThatIgnoresPrototypeProperties(*this* value, %Iterator.prototype%, %Symbol.toStringTag%, _v_).
-            1. Return *undefined*.
+            1. Let _O_ be the *this* value.
+            1. If _O_ is not an Object, throw a *TypeError* exception.
+            1. Let _iterated_ be the Iterator Record { [[Iterator]]: _O_, [[NextMethod]]: *undefined*, [[Done]]: *false* }.
+            1. If IsCallable(_predicate_) is *false*, then
+              1. Let _error_ be ThrowCompletion(a newly created *TypeError* object).
+              1. Return ? IteratorClose(_iterated_, _error_).
+            1. Set _iterated_ to ? GetIteratorDirect(_O_).
+            1. Let _counter_ be 0.
+            1. Repeat,
+              1. Let _value_ be ? IteratorStepValue(_iterated_).
+              1. If _value_ is ~done~, return *true*.
+              1. Let _result_ be Completion(Call(_predicate_, *undefined*, « _value_, 𝔽(_counter_) »)).
+              1. IfAbruptCloseIterator(_result_, _iterated_).
+              1. If ToBoolean(_result_) is *false*, return ? IteratorClose(_iterated_, NormalCompletion(*false*)).
+              1. Set _counter_ to _counter_ + 1.
           </emu-alg>
         </emu-clause>
 
-        <emu-note>
-          <p>Unlike the %Symbol.toStringTag% property on most built-in prototypes, for web-compatibility reasons this property must be an accessor.</p>
-        </emu-note>
+        <emu-clause id="sec-iterator.prototype.filter">
+          <h1>Iterator.prototype.filter ( _predicate_ )</h1>
+          <p>This method performs the following steps when called:</p>
+          <emu-alg>
+            1. Let _O_ be the *this* value.
+            1. If _O_ is not an Object, throw a *TypeError* exception.
+            1. Let _iterated_ be the Iterator Record { [[Iterator]]: _O_, [[NextMethod]]: *undefined*, [[Done]]: *false* }.
+            1. If IsCallable(_predicate_) is *false*, then
+              1. Let _error_ be ThrowCompletion(a newly created *TypeError* object).
+              1. Return ? IteratorClose(_iterated_, _error_).
+            1. Set _iterated_ to ? GetIteratorDirect(_O_).
+            1. Let _closure_ be a new Abstract Closure with no parameters that captures _iterated_ and _predicate_ and performs the following steps when called:
+              1. Let _counter_ be 0.
+              1. Repeat,
+                1. Let _value_ be ? IteratorStepValue(_iterated_).
+                1. If _value_ is ~done~, return ReturnCompletion(*undefined*).
+                1. Let _selected_ be Completion(Call(_predicate_, *undefined*, « _value_, 𝔽(_counter_) »)).
+                1. IfAbruptCloseIterator(_selected_, _iterated_).
+                1. If ToBoolean(_selected_) is *true*, then
+                  1. Let _completion_ be Completion(Yield(_value_)).
+                  1. IfAbruptCloseIterator(_completion_, _iterated_).
+                1. Set _counter_ to _counter_ + 1.
+            1. Let _result_ be CreateIteratorFromClosure(_closure_, *"Iterator Helper"*, %IteratorHelperPrototype%, « [[UnderlyingIterator]] »).
+            1. Set _result_.[[UnderlyingIterator]] to _iterated_.
+            1. Return _result_.
+          </emu-alg>
+        </emu-clause>
+
+        <emu-clause id="sec-iterator.prototype.find">
+          <h1>Iterator.prototype.find ( _predicate_ )</h1>
+          <p>This method performs the following steps when called:</p>
+          <emu-alg>
+            1. Let _O_ be the *this* value.
+            1. If _O_ is not an Object, throw a *TypeError* exception.
+            1. Let _iterated_ be the Iterator Record { [[Iterator]]: _O_, [[NextMethod]]: *undefined*, [[Done]]: *false* }.
+            1. If IsCallable(_predicate_) is *false*, then
+              1. Let _error_ be ThrowCompletion(a newly created *TypeError* object).
+              1. Return ? IteratorClose(_iterated_, _error_).
+            1. Set _iterated_ to ? GetIteratorDirect(_O_).
+            1. Let _counter_ be 0.
+            1. Repeat,
+              1. Let _value_ be ? IteratorStepValue(_iterated_).
+              1. If _value_ is ~done~, return *undefined*.
+              1. Let _result_ be Completion(Call(_predicate_, *undefined*, « _value_, 𝔽(_counter_) »)).
+              1. IfAbruptCloseIterator(_result_, _iterated_).
+              1. If ToBoolean(_result_) is *true*, return ? IteratorClose(_iterated_, NormalCompletion(_value_)).
+              1. Set _counter_ to _counter_ + 1.
+          </emu-alg>
+        </emu-clause>
+
+        <emu-clause id="sec-iterator.prototype.flatmap">
+          <h1>Iterator.prototype.flatMap ( _mapper_ )</h1>
+          <p>This method performs the following steps when called:</p>
+          <emu-alg>
+            1. Let _O_ be the *this* value.
+            1. If _O_ is not an Object, throw a *TypeError* exception.
+            1. Let _iterated_ be the Iterator Record { [[Iterator]]: _O_, [[NextMethod]]: *undefined*, [[Done]]: *false* }.
+            1. If IsCallable(_mapper_) is *false*, then
+              1. Let _error_ be ThrowCompletion(a newly created *TypeError* object).
+              1. Return ? IteratorClose(_iterated_, _error_).
+            1. Set _iterated_ to ? GetIteratorDirect(_O_).
+            1. Let _closure_ be a new Abstract Closure with no parameters that captures _iterated_ and _mapper_ and performs the following steps when called:
+              1. Let _counter_ be 0.
+              1. Repeat,
+                1. Let _value_ be ? IteratorStepValue(_iterated_).
+                1. If _value_ is ~done~, return ReturnCompletion(*undefined*).
+                1. Let _mapped_ be Completion(Call(_mapper_, *undefined*, « _value_, 𝔽(_counter_) »)).
+                1. IfAbruptCloseIterator(_mapped_, _iterated_).
+                1. Let _innerIterator_ be Completion(GetIteratorFlattenable(_mapped_, ~reject-primitives~)).
+                1. IfAbruptCloseIterator(_innerIterator_, _iterated_).
+                1. Let _innerAlive_ be *true*.
+                1. Repeat, while _innerAlive_ is *true*,
+                  1. Let _innerValue_ be Completion(IteratorStepValue(_innerIterator_)).
+                  1. IfAbruptCloseIterator(_innerValue_, _iterated_).
+                  1. If _innerValue_ is ~done~, then
+                    1. Set _innerAlive_ to *false*.
+                  1. Else,
+                    1. Let _completion_ be Completion(Yield(_innerValue_)).
+                    1. If _completion_ is an abrupt completion, then
+                      1. Let _backupCompletion_ be Completion(IteratorClose(_innerIterator_, _completion_)).
+                      1. IfAbruptCloseIterator(_backupCompletion_, _iterated_).
+                      1. Return ? IteratorClose(_iterated_, _completion_).
+                1. Set _counter_ to _counter_ + 1.
+            1. Let _result_ be CreateIteratorFromClosure(_closure_, *"Iterator Helper"*, %IteratorHelperPrototype%, « [[UnderlyingIterator]] »).
+            1. Set _result_.[[UnderlyingIterator]] to _iterated_.
+            1. Return _result_.
+          </emu-alg>
+        </emu-clause>
+
+        <emu-clause id="sec-iterator.prototype.foreach">
+          <h1>Iterator.prototype.forEach ( _procedure_ )</h1>
+          <p>This method performs the following steps when called:</p>
+          <emu-alg>
+            1. Let _O_ be the *this* value.
+            1. If _O_ is not an Object, throw a *TypeError* exception.
+            1. Let _iterated_ be the Iterator Record { [[Iterator]]: _O_, [[NextMethod]]: *undefined*, [[Done]]: *false* }.
+            1. If IsCallable(_procedure_) is *false*, then
+              1. Let _error_ be ThrowCompletion(a newly created *TypeError* object).
+              1. Return ? IteratorClose(_iterated_, _error_).
+            1. Set _iterated_ to ? GetIteratorDirect(_O_).
+            1. Let _counter_ be 0.
+            1. Repeat,
+              1. Let _value_ be ? IteratorStepValue(_iterated_).
+              1. If _value_ is ~done~, return *undefined*.
+              1. Let _result_ be Completion(Call(_procedure_, *undefined*, « _value_, 𝔽(_counter_) »)).
+              1. IfAbruptCloseIterator(_result_, _iterated_).
+              1. Set _counter_ to _counter_ + 1.
+          </emu-alg>
+        </emu-clause>
+
+        <emu-clause id="sec-iterator.prototype.map">
+          <h1>Iterator.prototype.map ( _mapper_ )</h1>
+          <p>This method performs the following steps when called:</p>
+          <emu-alg>
+            1. Let _O_ be the *this* value.
+            1. If _O_ is not an Object, throw a *TypeError* exception.
+            1. Let _iterated_ be the Iterator Record { [[Iterator]]: _O_, [[NextMethod]]: *undefined*, [[Done]]: *false* }.
+            1. If IsCallable(_mapper_) is *false*, then
+              1. Let _error_ be ThrowCompletion(a newly created *TypeError* object).
+              1. Return ? IteratorClose(_iterated_, _error_).
+            1. Set _iterated_ to ? GetIteratorDirect(_O_).
+            1. Let _closure_ be a new Abstract Closure with no parameters that captures _iterated_ and _mapper_ and performs the following steps when called:
+              1. Let _counter_ be 0.
+              1. Repeat,
+                1. Let _value_ be ? IteratorStepValue(_iterated_).
+                1. If _value_ is ~done~, return ReturnCompletion(*undefined*).
+                1. Let _mapped_ be Completion(Call(_mapper_, *undefined*, « _value_, 𝔽(_counter_) »)).
+                1. IfAbruptCloseIterator(_mapped_, _iterated_).
+                1. Let _completion_ be Completion(Yield(_mapped_)).
+                1. IfAbruptCloseIterator(_completion_, _iterated_).
+                1. Set _counter_ to _counter_ + 1.
+            1. Let _result_ be CreateIteratorFromClosure(_closure_, *"Iterator Helper"*, %IteratorHelperPrototype%, « [[UnderlyingIterator]] »).
+            1. Set _result_.[[UnderlyingIterator]] to _iterated_.
+            1. Return _result_.
+          </emu-alg>
+        </emu-clause>
+
+        <emu-clause id="sec-iterator.prototype.reduce">
+          <h1>Iterator.prototype.reduce ( _reducer_ [ , _initialValue_ ] )</h1>
+          <p>This method performs the following steps when called:</p>
+          <emu-alg>
+            1. Let _O_ be the *this* value.
+            1. If _O_ is not an Object, throw a *TypeError* exception.
+            1. Let _iterated_ be the Iterator Record { [[Iterator]]: _O_, [[NextMethod]]: *undefined*, [[Done]]: *false* }.
+            1. If IsCallable(_reducer_) is *false*, then
+              1. Let _error_ be ThrowCompletion(a newly created *TypeError* object).
+              1. Return ? IteratorClose(_iterated_, _error_).
+            1. Set _iterated_ to ? GetIteratorDirect(_O_).
+            1. If _initialValue_ is not present, then
+              1. Let _accumulator_ be ? IteratorStepValue(_iterated_).
+              1. If _accumulator_ is ~done~, throw a *TypeError* exception.
+              1. Let _counter_ be 1.
+            1. Else,
+              1. Let _accumulator_ be _initialValue_.
+              1. Let _counter_ be 0.
+            1. Repeat,
+              1. Let _value_ be ? IteratorStepValue(_iterated_).
+              1. If _value_ is ~done~, return _accumulator_.
+              1. Let _result_ be Completion(Call(_reducer_, *undefined*, « _accumulator_, _value_, 𝔽(_counter_) »)).
+              1. IfAbruptCloseIterator(_result_, _iterated_).
+              1. Set _accumulator_ to _result_.
+              1. Set _counter_ to _counter_ + 1.
+          </emu-alg>
+        </emu-clause>
+
+        <emu-clause id="sec-iterator.prototype.some">
+          <h1>Iterator.prototype.some ( _predicate_ )</h1>
+          <p>This method performs the following steps when called:</p>
+          <emu-alg>
+            1. Let _O_ be the *this* value.
+            1. If _O_ is not an Object, throw a *TypeError* exception.
+            1. Let _iterated_ be the Iterator Record { [[Iterator]]: _O_, [[NextMethod]]: *undefined*, [[Done]]: *false* }.
+            1. If IsCallable(_predicate_) is *false*, then
+              1. Let _error_ be ThrowCompletion(a newly created *TypeError* object).
+              1. Return ? IteratorClose(_iterated_, _error_).
+            1. Set _iterated_ to ? GetIteratorDirect(_O_).
+            1. Let _counter_ be 0.
+            1. Repeat,
+              1. Let _value_ be ? IteratorStepValue(_iterated_).
+              1. If _value_ is ~done~, return *false*.
+              1. Let _result_ be Completion(Call(_predicate_, *undefined*, « _value_, 𝔽(_counter_) »)).
+              1. IfAbruptCloseIterator(_result_, _iterated_).
+              1. If ToBoolean(_result_) is *true*, return ? IteratorClose(_iterated_, NormalCompletion(*true*)).
+              1. Set _counter_ to _counter_ + 1.
+          </emu-alg>
+        </emu-clause>
+
+        <emu-clause id="sec-iterator.prototype.take">
+          <h1>Iterator.prototype.take ( _limit_ )</h1>
+          <p>This method performs the following steps when called:</p>
+          <emu-alg>
+            1. Let _O_ be the *this* value.
+            1. If _O_ is not an Object, throw a *TypeError* exception.
+            1. Let _iterated_ be the Iterator Record { [[Iterator]]: _O_, [[NextMethod]]: *undefined*, [[Done]]: *false* }.
+            1. Let _numLimit_ be Completion(ToNumber(_limit_)).
+            1. IfAbruptCloseIterator(_numLimit_, _iterated_).
+            1. If _numLimit_ is *NaN*, then
+              1. Let _error_ be ThrowCompletion(a newly created *RangeError* object).
+              1. Return ? IteratorClose(_iterated_, _error_).
+            1. Let _integerLimit_ be ! ToIntegerOrInfinity(_numLimit_).
+            1. If _integerLimit_ &lt; 0, then
+              1. Let _error_ be ThrowCompletion(a newly created *RangeError* object).
+              1. Return ? IteratorClose(_iterated_, _error_).
+            1. Set _iterated_ to ? GetIteratorDirect(_O_).
+            1. Let _closure_ be a new Abstract Closure with no parameters that captures _iterated_ and _integerLimit_ and performs the following steps when called:
+              1. Let _remaining_ be _integerLimit_.
+              1. Repeat,
+                1. If _remaining_ = 0, then
+                  1. Return ? IteratorClose(_iterated_, ReturnCompletion(*undefined*)).
+                1. If _remaining_ ≠ +∞, then
+                  1. Set _remaining_ to _remaining_ - 1.
+                1. Let _value_ be ? IteratorStepValue(_iterated_).
+                1. If _value_ is ~done~, return ReturnCompletion(*undefined*).
+                1. Let _completion_ be Completion(Yield(_value_)).
+                1. IfAbruptCloseIterator(_completion_, _iterated_).
+            1. Let _result_ be CreateIteratorFromClosure(_closure_, *"Iterator Helper"*, %IteratorHelperPrototype%, « [[UnderlyingIterator]] »).
+            1. Set _result_.[[UnderlyingIterator]] to _iterated_.
+            1. Return _result_.
+          </emu-alg>
+        </emu-clause>
+
+        <emu-clause id="sec-iterator.prototype.toarray">
+          <h1>Iterator.prototype.toArray ( )</h1>
+          <p>This method performs the following steps when called:</p>
+          <emu-alg>
+            1. Let _O_ be the *this* value.
+            1. If _O_ is not an Object, throw a *TypeError* exception.
+            1. Let _iterated_ be ? GetIteratorDirect(_O_).
+            1. Let _items_ be a new empty List.
+            1. Repeat,
+              1. Let _value_ be ? IteratorStepValue(_iterated_).
+              1. If _value_ is ~done~, return CreateArrayFromList(_items_).
+              1. Append _value_ to _items_.
+          </emu-alg>
+        </emu-clause>
+
+        <emu-clause oldids="sec-%iteratorprototype%-@@iterator,sec-%iteratorprototype%-%symbol.iterator%" id="sec-iterator.prototype-%symbol.iterator%">
+          <h1>Iterator.prototype [ %Symbol.iterator% ] ( )</h1>
+          <p>This function performs the following steps when called:</p>
+          <emu-alg>
+            1. Return the *this* value.
+          </emu-alg>
+          <p>The value of the *"name"* property of this function is *"[Symbol.iterator]"*.</p>
+        </emu-clause>
+
+        <emu-clause id="sec-iterator.prototype-%symbol.tostringtag%">
+          <h1>Iterator.prototype [ %Symbol.toStringTag% ]</h1>
+          <p>`Iterator.prototype[%Symbol.toStringTag%]` is an accessor property with attributes { [[Enumerable]]: *false*, [[Configurable]]: *true* }. The [[Get]] and [[Set]] attributes are defined as follows:</p>
+
+          <emu-clause id="sec-get-iterator.prototype-%symbol.tostringtag%">
+            <h1>get Iterator.prototype [ %Symbol.toStringTag% ]</h1>
+            <p>The value of the [[Get]] attribute is a built-in function that requires no arguments. It performs the following steps when called:</p>
+            <emu-alg>
+              1. Return *"Iterator"*.
+            </emu-alg>
+          </emu-clause>
+
+          <emu-clause id="sec-set-iterator.prototype-%symbol.tostringtag%">
+            <h1>set Iterator.prototype [ %Symbol.toStringTag% ]</h1>
+            <p>The value of the [[Set]] attribute is a built-in function that takes an argument _v_. It performs the following steps when called:</p>
+            <emu-alg>
+              1. Perform ? SetterThatIgnoresPrototypeProperties(*this* value, %Iterator.prototype%, %Symbol.toStringTag%, _v_).
+              1. Return *undefined*.
+            </emu-alg>
+          </emu-clause>
+
+          <emu-note>
+            <p>Unlike the %Symbol.toStringTag% property on most built-in prototypes, for web-compatibility reasons this property must be an accessor.</p>
+          </emu-note>
+        </emu-clause>
       </emu-clause>
     </emu-clause>
 
@@ -52314,6 +52285,8 @@ THH:mm:ss.sss
 <emu-annex id="sec-additional-ecmascript-features-for-web-browsers" namespace="annexB" normative>
   <h1>Additional ECMAScript Features for Web Browsers</h1>
   <p>The ECMAScript language syntax and semantics defined in this annex are required when the ECMAScript host is a web browser. The content of this annex is normative but optional if the ECMAScript host is not a web browser.</p>
+  <p>Some features defined in this annex are specified in this annex, and some are specified in the main body of this document.</p>
+  <p>When a feature is specified in the main body, each point where it affects the document is marked with the words "Normative Optional" in a coloured box. Moreover, where the feature involves particular wording in an algorithm or early error rule, this is guarded by the condition that “<dfn variants="otherwise supports">the host supports</dfn>” the relevant feature. Web browsers are required to support all such features.</p>
   <emu-note>
     <p>This annex describes various legacy features and other characteristics of web browser ECMAScript hosts. All of the language features and behaviours specified in this annex have one or more undesirable characteristics and in the absence of legacy usage would be removed from this specification. However, the usage of these features by large numbers of existing web pages means that web browsers must continue to support them. The specifications in this annex define the requirements for interoperable implementations of these legacy features.</p>
     <p>These features are not considered part of the core ECMAScript language. Programmers should not use or assume the existence of these features and behaviours when writing new ECMAScript code. ECMAScript implementations are discouraged from implementing these features unless the implementation is part of a web browser or is required to run the same legacy ECMAScript code that web browsers encounter.</p>
@@ -52773,7 +52746,8 @@ THH:mm:ss.sss
         <p>This method returns a <emu-not-ref>substring</emu-not-ref> of the result of converting the *this* value to a String, starting from index _start_ and running for _length_ code units (or through the end of the String if _length_ is *undefined*). If _start_ is negative, it is treated as <emu-eqn>_sourceLength_ + _start_</emu-eqn> where _sourceLength_ is the length of the String. The result is a String value, not a String object.</p>
         <p>It performs the following steps when called:</p>
         <emu-alg>
-          1. Let _O_ be ? RequireObjectCoercible(*this* value).
+          1. Let _O_ be the *this* value.
+          1. Perform ? RequireObjectCoercible(_O_).
           1. Let _S_ be ? ToString(_O_).
           1. Let _size_ be the length of _S_.
           1. Let _intStart_ be ? ToIntegerOrInfinity(_start_).
@@ -52810,8 +52784,8 @@ THH:mm:ss.sss
           <dl class="header">
           </dl>
           <emu-alg>
-            1. Let _str_ be ? RequireObjectCoercible(_string_).
-            1. Let _S_ be ? ToString(_str_).
+            1. Perform ? RequireObjectCoercible(_string_).
+            1. Let _S_ be ? ToString(_string_).
             1. Let _p1_ be the string-concatenation of *"&lt;"* and _tag_.
             1. If _attribute_ is not the empty String, then
               1. Let _V_ be ? ToString(_value_).
@@ -53035,13 +53009,7 @@ THH:mm:ss.sss
 
     <emu-annex id="sec-labelled-function-declarations">
       <h1>Labelled Function Declarations</h1>
-      <p>Prior to ECMAScript 2015, the specification of |LabelledStatement| did not allow for the association of a statement label with a |FunctionDeclaration|. However, a labelled |FunctionDeclaration| was an allowable extension for non-strict code and most browser-hosted ECMAScript implementations supported that extension. In ECMAScript 2015 and later, the grammar production for |LabelledStatement| permits use of |FunctionDeclaration| as a |LabelledItem| but <emu-xref href="#sec-labelled-statements-static-semantics-early-errors"></emu-xref> includes an Early Error rule that produces a Syntax Error if that occurs. That rule is modified with the addition of the <ins>highlighted</ins> text:</p>
-      <emu-grammar>LabelledItem : FunctionDeclaration</emu-grammar>
-      <ul>
-        <li>
-          It is a Syntax Error if any source text <ins>that is strict mode code</ins> is matched by this production.
-        </li>
-      </ul>
+      <p>Prior to ECMAScript 2015, the specification of |LabelledStatement| did not allow for the association of a statement label with a |FunctionDeclaration|. However, a labelled |FunctionDeclaration| was an allowable extension for non-strict code and most browser-hosted ECMAScript implementations supported that extension. In ECMAScript 2015 and later, the grammar production for |LabelledStatement| permits use of |FunctionDeclaration| as a |LabelledItem| but <emu-xref href="#sec-labelled-statements-static-semantics-early-errors"></emu-xref> includes an Early Error rule that produces a Syntax Error if that occurs. That rule is then modified to suppress the Syntax Error in non-strict code if the host supports this feature.</p>
       <emu-note>
         <p>The early error rules for |WithStatement|, |IfStatement|, and |IterationStatement| prevent these statements from containing a labelled |FunctionDeclaration| in non-strict code.</p>
       </emu-note>
@@ -53106,144 +53074,16 @@ THH:mm:ss.sss
       <p>The first use case is interoperable with the semantics of |Block| level function declarations provided by ECMAScript 2015. Any pre-existing ECMAScript source text that employs that use case will operate using the Block level function declarations semantics defined by clauses <emu-xref href="#sec-ordinary-and-exotic-objects-behaviours"></emu-xref>, <emu-xref href="#sec-ecmascript-language-statements-and-declarations"></emu-xref>, and <emu-xref href="#sec-ecmascript-language-functions-and-classes"></emu-xref>.</p>
       <p>ECMAScript 2015 interoperability for the second and third use cases requires the following extensions to the clause <emu-xref href="#sec-ordinary-and-exotic-objects-behaviours"></emu-xref>, clause <emu-xref href="#sec-ecmascript-language-functions-and-classes"></emu-xref>, clause <emu-xref href="#sec-eval-x"></emu-xref> and clause <emu-xref href="#sec-globaldeclarationinstantiation"></emu-xref> semantics.</p>
       <p>If an ECMAScript implementation has a mechanism for reporting diagnostic warning messages, a warning should be produced when code contains a |FunctionDeclaration| for which these compatibility semantics are applied and introduce observable differences from non-compatibility semantics. For example, if a var binding is not introduced because its introduction would create an early error, a warning message should not be produced.</p>
-
-      <emu-annex id="sec-web-compat-functiondeclarationinstantiation">
-        <h1>Changes to FunctionDeclarationInstantiation</h1>
-        <p>During FunctionDeclarationInstantiation the following steps are performed in place of step <emu-xref href="#step-functiondeclarationinstantiation-web-compat-insertion-point"></emu-xref>:</p>
-        <emu-alg replaces-step="step-functiondeclarationinstantiation-web-compat-insertion-point">
-          1. If _strict_ is *false*, then
-            1. For each |FunctionDeclaration| _f_ that is directly contained in the |StatementList| of any |Block|, |CaseClause|, or |DefaultClause| _x_ such that _code_ Contains _x_ is *true*, do
-              1. Let _F_ be the StringValue of the |BindingIdentifier| of _f_.
-              1. If replacing the |FunctionDeclaration| _f_ with a |VariableStatement| that has _F_ as a |BindingIdentifier| would not produce any Early Errors for _func_ and _parameterNames_ does not contain _F_, then
-                1. NOTE: A var binding for _F_ is only instantiated here if it is neither a VarDeclaredName, the name of a formal parameter, or another |FunctionDeclaration|.
-                1. If _instantiatedVarNames_ does not contain _F_ and _F_ is not *"arguments"*, then
-                  1. Perform ! _varEnv_.CreateMutableBinding(_F_, *false*).
-                  1. Perform ! _varEnv_.InitializeBinding(_F_, *undefined*).
-                  1. Append _F_ to _instantiatedVarNames_.
-                1. When the |FunctionDeclaration| _f_ is evaluated, perform the following steps in place of the |FunctionDeclaration| Evaluation algorithm provided in <emu-xref href="#sec-function-definitions-runtime-semantics-evaluation"></emu-xref>:
-                  1. Let _fEnv_ be the running execution context's VariableEnvironment.
-                  1. Let _bEnv_ be the running execution context's LexicalEnvironment.
-                  1. Let _fObj_ be ! _bEnv_.GetBindingValue(_F_, *false*).
-                  1. Perform ! _fEnv_.SetMutableBinding(_F_, _fObj_, *false*).
-                  1. Return ~unused~.
-        </emu-alg>
-      </emu-annex>
-
-      <emu-annex id="sec-web-compat-globaldeclarationinstantiation">
-        <h1>Changes to GlobalDeclarationInstantiation</h1>
-        <p>During GlobalDeclarationInstantiation the following steps are performed in place of step <emu-xref href="#step-globaldeclarationinstantiation-web-compat-insertion-point"></emu-xref>:</p>
-        <emu-alg replaces-step="step-globaldeclarationinstantiation-web-compat-insertion-point">
-          1. Perform the following steps:
-            1. Let _strict_ be ScriptIsStrict of _script_.
-            1. If _strict_ is *false*, then
-              1. Let _declaredFunctionOrVarNames_ be the list-concatenation of _declaredFunctionNames_ and _declaredVarNames_.
-              1. For each |FunctionDeclaration| _f_ that is directly contained in the |StatementList| of any |Block|, |CaseClause|, or |DefaultClause| _x_ such that _script_ Contains _x_ is *true*, do
-                1. Let _F_ be the StringValue of the |BindingIdentifier| of _f_.
-                1. If replacing the |FunctionDeclaration| _f_ with a |VariableStatement| that has _F_ as a |BindingIdentifier| would not produce any Early Errors for _script_, then
-                  1. If HasLexicalDeclaration(_env_, _F_) is *false*, then
-                    1. Let _fnDefinable_ be ? CanDeclareGlobalVar(_env_, _F_).
-                    1. If _fnDefinable_ is *true*, then
-                      1. NOTE: A var binding for _F_ is only instantiated here if it is neither a VarDeclaredName nor the name of another |FunctionDeclaration|.
-                      1. If _declaredFunctionOrVarNames_ does not contain _F_, then
-                        1. Perform ? CreateGlobalVarBinding(_env_, _F_, *false*).
-                        1. Append _F_ to _declaredFunctionOrVarNames_.
-                      1. When the |FunctionDeclaration| _f_ is evaluated, perform the following steps in place of the |FunctionDeclaration| Evaluation algorithm provided in <emu-xref href="#sec-function-definitions-runtime-semantics-evaluation"></emu-xref>:
-                        1. Let _gEnv_ be the running execution context's VariableEnvironment.
-                        1. Let _bEnv_ be the running execution context's LexicalEnvironment.
-                        1. Let _fObj_ be ! _bEnv_.GetBindingValue(_F_, *false*).
-                        1. Perform ? <emu-meta effects="user-code">_gEnv_.SetMutableBinding</emu-meta>(_F_, _fObj_, *false*).
-                        1. Return ~unused~.
-        </emu-alg>
-      </emu-annex>
-
-      <emu-annex id="sec-web-compat-evaldeclarationinstantiation">
-        <h1>Changes to EvalDeclarationInstantiation</h1>
-        <p>During EvalDeclarationInstantiation the following steps are performed in place of step <emu-xref href="#step-evaldeclarationinstantiation-web-compat-insertion-point"></emu-xref>:</p>
-        <emu-alg replaces-step="step-evaldeclarationinstantiation-web-compat-insertion-point">
-          1. If _strict_ is *false*, then
-            1. Let _declaredFunctionOrVarNames_ be the list-concatenation of _declaredFunctionNames_ and _declaredVarNames_.
-            1. For each |FunctionDeclaration| _f_ that is directly contained in the |StatementList| of any |Block|, |CaseClause|, or |DefaultClause| _x_ such that _body_ Contains _x_ is *true*, do
-              1. Let _F_ be the StringValue of the |BindingIdentifier| of _f_.
-              1. If replacing the |FunctionDeclaration| _f_ with a |VariableStatement| that has _F_ as a |BindingIdentifier| would not produce any Early Errors for _body_, then
-                1. Let _bindingExists_ be *false*.
-                1. Let _thisEnv_ be _lexEnv_.
-                1. Assert: The following loop will terminate.
-                1. Repeat, while _thisEnv_ is not _varEnv_,
-                  1. If _thisEnv_ is not an Object Environment Record, then
-                    1. If ! _thisEnv_.HasBinding(_F_) is *true*, then
-                      1. [id="step-evaldeclarationinstantiation-web-compat-bindingexists"] Let _bindingExists_ be *true*.
-                  1. Set _thisEnv_ to _thisEnv_.[[OuterEnv]].
-                1. If _bindingExists_ is *false* and _varEnv_ is a Global Environment Record, then
-                  1. If HasLexicalDeclaration(_varEnv_, _F_) is *false*, then
-                    1. Let _fnDefinable_ be ? CanDeclareGlobalVar(_varEnv_, _F_).
-                  1. Else,
-                    1. Let _fnDefinable_ be *false*.
-                1. Else,
-                  1. Let _fnDefinable_ be *true*.
-                1. If _bindingExists_ is *false* and _fnDefinable_ is *true*, then
-                  1. If _declaredFunctionOrVarNames_ does not contain _F_, then
-                    1. If _varEnv_ is a Global Environment Record, then
-                      1. Perform ? CreateGlobalVarBinding(_varEnv_, _F_, *true*).
-                    1. Else,
-                      1. Let _bindingExists_ be ! _varEnv_.HasBinding(_F_).
-                      1. If _bindingExists_ is *false*, then
-                        1. Perform ! _varEnv_.CreateMutableBinding(_F_, *true*).
-                        1. Perform ! _varEnv_.InitializeBinding(_F_, *undefined*).
-                    1. Append _F_ to _declaredFunctionOrVarNames_.
-                  1. When the |FunctionDeclaration| _f_ is evaluated, perform the following steps in place of the |FunctionDeclaration| Evaluation algorithm provided in <emu-xref href="#sec-function-definitions-runtime-semantics-evaluation"></emu-xref>:
-                    1. Let _gEnv_ be the running execution context's VariableEnvironment.
-                    1. Let _bEnv_ be the running execution context's LexicalEnvironment.
-                    1. Let _fObj_ be ! _bEnv_.GetBindingValue(_F_, *false*).
-                    1. Perform ? <emu-meta effects="user-code">_gEnv_.SetMutableBinding</emu-meta>(_F_, _fObj_, *false*).
-                    1. Return ~unused~.
-        </emu-alg>
-      </emu-annex>
-
-      <emu-annex id="sec-block-duplicates-allowed-static-semantics">
-        <h1>Changes to Block Static Semantics: Early Errors</h1>
-        <p>The rules for the following production in <emu-xref href="#sec-block-static-semantics-early-errors"></emu-xref> are modified with the addition of the <ins>highlighted</ins> text:</p>
-        <emu-grammar>Block : `{` StatementList `}`</emu-grammar>
-        <ul>
-          <li>
-            It is a Syntax Error if the LexicallyDeclaredNames of |StatementList| contains any duplicate entries<ins>, unless IsStrict(this production) is *false* and the duplicate entries are only bound by FunctionDeclarations</ins>.
-          </li>
-          <li>
-            It is a Syntax Error if any element of the LexicallyDeclaredNames of |StatementList| also occurs in the VarDeclaredNames of |StatementList|.
-          </li>
-        </ul>
-      </emu-annex>
-
-      <emu-annex id="sec-switch-duplicates-allowed-static-semantics">
-        <h1>Changes to `switch` Statement Static Semantics: Early Errors</h1>
-        <p>The rules for the following production in <emu-xref href="#sec-switch-statement-static-semantics-early-errors"></emu-xref> are modified with the addition of the <ins>highlighted</ins> text:</p>
-        <emu-grammar>SwitchStatement : `switch` `(` Expression `)` CaseBlock</emu-grammar>
-        <ul>
-          <li>
-            It is a Syntax Error if the LexicallyDeclaredNames of |CaseBlock| contains any duplicate entries<ins>, unless IsStrict(this production) is *false* and the duplicate entries are only bound by FunctionDeclarations</ins>.
-          </li>
-          <li>
-            It is a Syntax Error if any element of the LexicallyDeclaredNames of |CaseBlock| also occurs in the VarDeclaredNames of |CaseBlock|.
-          </li>
-        </ul>
-      </emu-annex>
-
-      <emu-annex id="sec-web-compat-blockdeclarationinstantiation">
-        <h1>Changes to BlockDeclarationInstantiation</h1>
-        <p>During BlockDeclarationInstantiation the following steps are performed in place of step <emu-xref href="#step-blockdeclarationinstantiation-createmutablebinding"></emu-xref>:</p>
-        <emu-alg replaces-step="step-blockdeclarationinstantiation-createmutablebinding">
-          1. If ! _env_.HasBinding(_dn_) is *false*, then
-            1. Perform ! _env_.CreateMutableBinding(_dn_, *false*).
-        </emu-alg>
-        <p>During BlockDeclarationInstantiation the following steps are performed in place of step <emu-xref href="#step-blockdeclarationinstantiation-initializebinding"></emu-xref>:</p>
-        <emu-alg replaces-step="step-blockdeclarationinstantiation-initializebinding">
-          1. Perform the following steps:
-            1. If the binding for _fn_ in _env_ is an uninitialized binding, then
-              1. Perform ! _env_.InitializeBinding(_fn_, _fo_).
-            1. Else,
-              1. Assert: _d_ is a |FunctionDeclaration|.
-              1. Perform ! _env_.SetMutableBinding(_fn_, _fo_, *false*).
-        </emu-alg>
-      </emu-annex>
+      <p>This feature involves special semantics at the following points:</p>
+      <ul>
+        <li>one of the early error rules for <emu-grammar>Block : `{` StatementList `}`</emu-grammar> in <emu-xref href="#sec-block-static-semantics-early-errors"></emu-xref></li>
+        <li>one of the early error rules for <emu-grammar>SwitchStatement : `switch` `(` Expression `)` CaseBlock</emu-grammar> in <emu-xref href="#sec-switch-statement-static-semantics-early-errors"></emu-xref></li>
+        <li>step <emu-xref href="#step-functiondeclarationinstantiation-web-compat-insertion-point"></emu-xref> in FunctionDeclarationInstantiation</li>
+        <li>step <emu-xref href="#step-blockdeclarationinstantiation-createmutablebinding"></emu-xref> in BlockDeclarationInstantiation</li>
+        <li>step <emu-xref href="#step-blockdeclarationinstantiation-initializebinding"></emu-xref> in BlockDeclarationInstantiation</li>
+        <li>step <emu-xref href="#step-globaldeclarationinstantiation-web-compat-insertion-point"></emu-xref> in GlobalDeclarationInstantiation</li>
+        <li>step <emu-xref href="#step-evaldeclarationinstantiation-web-compat-insertion-point"></emu-xref> in EvalDeclarationInstantiation</li>
+      </ul>
     </emu-annex>
 
     <emu-annex id="sec-functiondeclarations-in-ifstatement-statement-clauses">
@@ -53261,31 +53101,11 @@ THH:mm:ss.sss
 
     <emu-annex id="sec-variablestatements-in-catch-blocks">
       <h1>VariableStatements in Catch Blocks</h1>
-      <p>The content of subclause <emu-xref href="#sec-try-statement-static-semantics-early-errors"></emu-xref> is replaced with the following:</p>
-      <emu-grammar>Catch : `catch` `(` CatchParameter `)` Block</emu-grammar>
-      <ul>
-        <li>
-          It is a Syntax Error if the BoundNames of |CatchParameter| contains any duplicate elements.
-        </li>
-        <li>
-          It is a Syntax Error if any element of the BoundNames of |CatchParameter| also occurs in the LexicallyDeclaredNames of |Block|.
-        </li>
-        <li>
-          It is a Syntax Error if any element of the BoundNames of |CatchParameter| also occurs in the VarDeclaredNames of |Block| unless |CatchParameter| is <emu-grammar>CatchParameter : BindingIdentifier</emu-grammar>.
-        </li>
-      </ul>
+      <p>In this feature, the |Block| of a |Catch| clause may contain `var` declarations that bind a name that is also bound by the |CatchParameter|. This is accomplished by modifying an early error rule for <emu-grammar>Catch : `catch` `(` CatchParameter `)` Block</emu-grammar> in <emu-xref href="#sec-try-statement-static-semantics-early-errors"></emu-xref>.</p>
       <emu-note>
-        <p>The |Block| of a |Catch| clause may contain `var` declarations that bind a name that is also bound by the |CatchParameter|. At runtime, such bindings are instantiated in the VariableDeclarationEnvironment. They do not shadow the same-named bindings introduced by the |CatchParameter| and hence the |Initializer| for such `var` declarations will assign to the corresponding catch parameter rather than the `var` binding.</p>
+        <p>At runtime, such bindings are instantiated in the VariableDeclarationEnvironment. They do not shadow the same-named bindings introduced by the |CatchParameter| and hence the |Initializer| for such `var` declarations will assign to the corresponding catch parameter rather than the `var` binding.</p>
       </emu-note>
-      <p>This modified behaviour also applies to `var` and `function` declarations introduced by direct eval calls contained within the |Block| of a |Catch| clause. This change is accomplished by modifying the algorithm of <emu-xref href="#sec-evaldeclarationinstantiation"></emu-xref> as follows:</p>
-      <p>Step <emu-xref href="#step-evaldeclarationinstantiation-throw-duplicate-binding"></emu-xref> is replaced by:</p>
-      <emu-alg replaces-step="step-evaldeclarationinstantiation-throw-duplicate-binding">
-        1. If _thisEnv_ is not the Environment Record for a |Catch| clause, throw a *SyntaxError* exception.
-      </emu-alg>
-      <p>Step <emu-xref href="#step-evaldeclarationinstantiation-web-compat-bindingexists"></emu-xref> is replaced by:</p>
-      <emu-alg replaces-step="step-evaldeclarationinstantiation-web-compat-bindingexists">
-        1. If _thisEnv_ is not the Environment Record for a |Catch| clause, let _bindingExists_ be *true*.
-      </emu-alg>
+      <p>This modified behaviour also applies to `var` and `function` declarations introduced by direct eval calls contained within the |Block| of a |Catch| clause. This change is accomplished by modifying steps <emu-xref href="#step-evaldeclarationinstantiation-throw-duplicate-binding"></emu-xref> and <emu-xref href="#step-evaldeclarationinstantiation-web-compat-bindingexists"></emu-xref> in EvalDeclarationInstantiation.</p>
     </emu-annex>
 
     <emu-annex id="sec-initializers-in-forin-statement-heads">
@@ -53357,32 +53177,12 @@ THH:mm:ss.sss
       <emu-note>
         <p>Objects with an [[IsHTMLDDA]] internal slot are never created by this specification. However, the <a href="https://html.spec.whatwg.org/multipage/obsolete.html#dom-document-all"><code>document.all</code> object</a> in web browsers is a host-defined exotic object with this slot that exists for web compatibility purposes. There are no other known examples of this type of object and implementations should not create any with the exception of `document.all`.</p>
       </emu-note>
-
-      <emu-annex id="sec-IsHTMLDDA-internal-slot-to-boolean">
-        <h1>Changes to ToBoolean</h1>
-        <p>The following step replaces step <emu-xref href="#step-to-boolean-web-compat-insertion-point"></emu-xref> of ToBoolean:</p>
-        <emu-alg replaces-step="step-to-boolean-web-compat-insertion-point">
-          1. If _argument_ is an Object and _argument_ has an [[IsHTMLDDA]] internal slot, return *false*.
-        </emu-alg>
-      </emu-annex>
-
-      <emu-annex id="sec-IsHTMLDDA-internal-slot-aec">
-        <h1>Changes to IsLooselyEqual</h1>
-        <p>The following steps replace step <emu-xref href="#step-abstract-equality-comparison-web-compat-insertion-point"></emu-xref> of IsLooselyEqual:</p>
-        <emu-alg replaces-step="step-abstract-equality-comparison-web-compat-insertion-point">
-          1. Perform the following steps:
-            1. If _x_ is an Object, _x_ has an [[IsHTMLDDA]] internal slot, and _y_ is either *undefined* or *null*, return *true*.
-            1. If _x_ is either *undefined* or *null*, _y_ is an Object, and _y_ has an [[IsHTMLDDA]] internal slot, return *true*.
-        </emu-alg>
-      </emu-annex>
-
-      <emu-annex id="sec-IsHTMLDDA-internal-slot-typeof">
-        <h1>Changes to the `typeof` Operator</h1>
-        <p>The following step replaces step <emu-xref href="#step-typeof-web-compat-insertion-point"></emu-xref> of <emu-xref href="#sec-typeof-operator-runtime-semantics-evaluation">the evaluation semantics for `typeof`</emu-xref>:</p>
-        <emu-alg replaces-step="step-typeof-web-compat-insertion-point">
-          1. If _val_ has an [[IsHTMLDDA]] internal slot, return *"undefined"*.
-        </emu-alg>
-      </emu-annex>
+      <p>This feature involves special semantics at the following points:</p>
+      <ul>
+        <li>step <emu-xref href="#step-to-boolean-web-compat-insertion-point"></emu-xref> in ToBoolean</li>
+        <li>step <emu-xref href="#step-abstract-equality-comparison-web-compat-insertion-point"></emu-xref> in IsLooselyEqual</li>
+        <li>step <emu-xref href="#step-typeof-web-compat-insertion-point"></emu-xref> in the evaluation semantics for `typeof`</li>
+      </ul>
     </emu-annex>
 
     <emu-annex id="sec-web-compat-host-make-job-callback">
@@ -53638,6 +53438,6 @@ THH:mm:ss.sss
 
 <emu-annex id="sec-colophon" back-matter>
   <h1>Colophon</h1>
-  <p>This specification is authored on <a href="https://github.com/tc39/ecma262">GitHub</a> in a plaintext source format called <a href="https://github.com/bterlson/ecmarkup">Ecmarkup</a>. Ecmarkup is an HTML and Markdown dialect that provides a framework and toolset for authoring ECMAScript specifications in plaintext and processing the specification into a full-featured HTML rendering that follows the editorial conventions for this document. Ecmarkup builds on and integrates a number of other formats and technologies including <a href="https://github.com/rbuckton/grammarkdown">Grammarkdown</a> for defining syntax and <a href="https://github.com/domenic/ecmarkdown">Ecmarkdown</a> for authoring algorithm steps. PDF renderings of this specification are produced using a print stylesheet which takes advantage of the CSS Paged Media specification and is converted using <a href="https://www.princexml.com/">PrinceXML</a>.</p>
+  <p>This specification is authored on <a href="https://github.com/tc39/ecma262">GitHub</a> in a plaintext source format called <a href="https://github.com/bterlson/ecmarkup">Ecmarkup</a>. Ecmarkup is an HTML and Markdown dialect that provides a framework and toolset for authoring Ecma specifications in plaintext and processing the specification into a full-featured HTML rendering that follows the editorial conventions for this document. Ecmarkup builds on and integrates a number of other formats and technologies including <a href="https://github.com/rbuckton/grammarkdown">Grammarkdown</a> for defining syntax and <a href="https://github.com/domenic/ecmarkdown">Ecmarkdown</a> for authoring algorithm steps. PDF renderings of this specification are produced using a print stylesheet which takes advantage of the CSS Paged Media specification and is converted using <a href="https://www.princexml.com/">PrinceXML</a>.</p>
   <p>Prior editions of this specification were authored using Word—the Ecmarkup source text that formed the basis of this edition was produced by converting the ECMAScript 2015 Word document to Ecmarkup using an automated conversion tool.</p>
 </emu-annex>

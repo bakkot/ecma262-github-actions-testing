@@ -9,10 +9,7 @@
 #   deploy:
 #     name: 'deploy github pages'
 #     runs-on: ubuntu-22.04
-#     if: ${{ github.repository == 'bakkot/ecma262-github-actions-testing' }}
-
-#     permissions:
-#       contents: write
+#     if: ${{ github.repository == 'tc39/ecma262' }}
 
 #     steps:
 #       - uses: actions/checkout@v4
@@ -24,6 +21,6 @@
 #           node-version: lts/*
 #           use-npm-ci: true
 #       - run: npm run build-only
-#       - run: ./scripts/auto-deploy.sh
+#       - run: ./scripts/deploy-github-pages.sh
 #         env:
 #           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
