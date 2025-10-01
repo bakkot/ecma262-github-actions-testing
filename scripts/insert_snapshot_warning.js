@@ -9,7 +9,7 @@ const COMMIT = String(execSync('git rev-parse --verify HEAD')).trim();
 
 const WARNING_HTML = `
 <details class="annoying-warning" open="">
-  <summary>This is a commit snapshot of the specification</summary>
+  <summary>HI I AM MESSING WITH THE SCRIPTS</summary>
   <p>
     This document contains the contents of the specification as of
     <a href="https://github.com/tc39/ecma262/commit/${COMMIT}">commit ${COMMIT}</a>,
